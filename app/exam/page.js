@@ -1,6 +1,6 @@
 'use client'
 import {useRouter, useSearchParams} from "next/navigation";
-import {useEffect, useState, useRef} from "react";
+import {useEffect, useState, useRef, useMemo} from "react";
 import {getQuestionData} from "../../lib/store";
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import Button from "../../components/ui/Button";
@@ -12,30 +12,44 @@ const Exam = () => {
     const [dataList, setDataList] = useState([])
     const category = searchParams.get('category')
     const swiperRef = useRef();
-    const [optionIndex, setOptionsIndex] = useState('')
-    const [activeIndex, setActiveIndex] = useState(0)
-    const [showModal, setShowModal] = useState(false)
-    const [isCorrect, setIsCorrect] = useState(false)
-    const [footerState, setFooterState] = useState('disable') // disable | success | error
+    const [optionIndex, setOptionsIndex] = useState('') // 选中的选项
+    const [activeIndex, setActiveIndex] = useState(0) // 当前是第几题
+    const [footerState, setFooterState] = useState('disable') // disable | success | error | continue
+    const selectQuestion = useMemo(() => {
+        if (dataList) return dataList[activeIndex]
+        else return {}
+    }, [dataList, activeIndex])
 
     useEffect(() => {
-        console.log('category', category)
         const data = getQuestionData()
         if (data) {
             setDataList(data)
         }
     }, [])
 
-    useEffect(() => {
-        // const flky = new Flickity('.mo-wrap', {
-        //     fullscreen: true,
-        // })
-        // console.log('flky', flky)
-    }, [])
 
-    const handleClick = (index) => {
+    const handleClickOption = (index) => {
+        if (footerState !== 'disable') {
+            return
+        }
         setOptionsIndex(index)
-        setFooterState('success')
+        const choice = selectQuestion?.answerChoice
+        const mapLetterToIndex = {
+            'A': 0,
+            'B': 1,
+            'C': 2,
+            'D': 3,
+            'a': 0,
+            'b': 1,
+            'c': 2,
+            'd': 3,
+        }
+        console.log('mapLetterToIndex[choice]', mapLetterToIndex[choice], index)
+        if (mapLetterToIndex[choice] === index) {
+            setFooterState('success')
+        } else {
+            setFooterState('error')
+        }
     }
 
     const handleSlideChange = (slide) => {
@@ -45,20 +59,37 @@ const Exam = () => {
     }
 
     const handleCheck = () => {
-        setFooterState('error')
-        nextSlide()
+        console.log('check')
+        if (footerState === 'success' || footerState === 'error' ) {
+            nextSlide()
+        } else {
+            const choice = selectQuestion?.answerChoice
+            const mapLetterToIndex = {
+                'A': 0,
+                'B': 1,
+                'C': 2,
+                'D': 3,
+                'a': 0,
+                'b': 1,
+                'c': 2,
+                'd': 3,
+            }
+            console.log('mapLetterToIndex[choice]', mapLetterToIndex[choice], optionIndex)
+            if (mapLetterToIndex[choice] === optionIndex) {
+                setFooterState('success')
+            } else {
+                setFooterState('error')
+            }
+        }
     }
 
     const nextSlide = () => {
         setOptionsIndex('')
-        setFooterState('wait')
+        setFooterState('disable')
         swiperRef.current.slideNext()
     }
 
-    const footerCls = classNames({
-        'footer-correct': isCorrect
-    })
-
+    console.log('footer', footerState)
     return <div className={"mo-wrap grid grid-cols-1 p-6"} style={{
         'grid-template-rows':'min-content 1fr min-content',
         'min-height': '100vh'
@@ -74,12 +105,10 @@ const Exam = () => {
                         <ul>
                             {item.options.map((item, j) => {
                                 const type = j === optionIndex ? 'primary' : ''
-                                return <li onClick={() => handleClick(j)} className={"flex justify-center items-center"} key={item}>
+                                return <li onClick={() => handleClickOption(j)} className={"flex justify-center items-center"} key={item}>
                                     <Button type={type} className={"mb-2"}>
                                         {item}
                                     </Button>
-                                    {/*{String.fromCharCode(65 + j)}.*/}
-
                                 </li>
                             })}
                         </ul>
@@ -88,11 +117,17 @@ const Exam = () => {
                 })
             }
         </Swiper>
-        <div className={"footer p-t-2" + footerCls}>
+        <div className={"footer p-t-2"}>
             {
                 footerState === 'error' && <div className={"absolute left-0 right-0 bottom-0 bg-[#ffdfe0] p-4 pb-24 z-0"}>
                     <p className={"text-[#ea2b2b] text-xl font-bold"}>正确答案：</p>
-                    <span className={"text-[#ea2b2b]"}>{dataList[activeIndex]?.answer}</span>
+                    <span className={"text-[#ea2b2b]"}>{selectQuestion?.answer}</span>
+                </div>
+            }
+            {
+                footerState === 'success' && <div className={"absolute left-0 right-0 bottom-0 bg-[#d7ffb8] p-4 pb-24 z-0"}>
+                    <p className={"text-[#58a700] text-2xl font-bold"}>不错哦！</p>
+                    <span className={"text-[#58a700]"}>{selectQuestion?.answer}</span>
                 </div>
             }
             <Button onClick={handleCheck} className={"relative"} type={footerState}>{footerState === 'wait' ? '检查' : '继续'}</Button>

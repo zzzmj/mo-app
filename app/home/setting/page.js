@@ -1,37 +1,66 @@
 "use client";
 import {useState} from "react";
 import {setQuestionData} from "../../../lib/store";
-function parseQuestions(text) {
-    // 将文本分割成多个部分，每个部分包含一个问题、选项和解析
-    const parts = text.split(/\【例\d+】/).slice(1);
 
-    // 对每个部分进行解析
-    const questions = parts.map(part => {
-        const sections = part.split('【解析】');
-        const content = sections[0].split('\n').slice(0, -1).join('\n');
-        const answer = sections[1];
-        const optionsContent = content.split('\n').slice(1);
+function parseQuestions(input) {
+    let parts = input.split('\n').filter(e => e);
+    let questions = [];
+
+    for(let i = 0; i < parts.length; ) {
+        if (!parts[i].startsWith('【例')) {
+            i++;
+            continue;
+        }
+
+        let content = parts[i++].replace(/【例\d+】/g, "").trim();
         let options = [];
-        optionsContent.forEach((option, index) => {
-            // 我们假设选项标签是大写字母
-            // const optionLabel = String.fromCharCode(65 + index);  // ASCII value of 'A' is 65
-            // options[optionLabel] = option;
-            if (option) {
-                options.push(option)
-            }
-        });
-
-        // 返回解析后的问题对象
-        return {
+        while(i < parts.length && !parts[i].startsWith('【解析】')) {
+            options.push(parts[i++].trim());
+        }
+        let answer = parts[i++].replace(/【解析】[A-Za-z]./g, "").trim();
+        let answerChoice = parts[i - 1].match(/【解析】([A-Za-z])/)[1];
+        questions.push({
             content: content,
-            options: options,
             answer: answer,
-            answerChoice: answer[0]
-        };
-    });
+            options: options,
+            answerChoice: answerChoice
+        });
+    }
 
     return questions;
 }
+
+// function parseQuestions(text) {
+//     // 将文本分割成多个部分，每个部分包含一个问题、选项和解析
+//     const parts = text.split(/\【例\d+】/).slice(1);
+//
+//     // 对每个部分进行解析
+//     const questions = parts.map(part => {
+//         const sections = part.split('【解析】');
+//         const content = sections[0].split('\n').slice(0, -1).join('\n');
+//         const answer = sections[1];
+//         const optionsContent = content.split('\n').slice(1);
+//         let options = [];
+//         optionsContent.forEach((option, index) => {
+//             // 我们假设选项标签是大写字母
+//             // const optionLabel = String.fromCharCode(65 + index);  // ASCII value of 'A' is 65
+//             // options[optionLabel] = option;
+//             if (option) {
+//                 options.push(option)
+//             }
+//         });
+//
+//         // 返回解析后的问题对象
+//         return {
+//             content: content,
+//             options: options,
+//             answer: answer,
+//             answerChoice: answer[0]
+//         };
+//     });
+//
+//     return questions;
+// }
 
 // // 使用函数
 // const questionsText = `【例1】我们也希望记忆中的歌声除了那些____的经典，还有不断诞生的新曲目。

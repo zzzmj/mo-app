@@ -1,9 +1,14 @@
-"use client";
-
-import {useRouter} from "next/navigation";
+import prisma from "../../../lib/prisma";
+import Link from "next/link";
+async function getUsers() {
+    const allUsers = await prisma.user.findMany();
+    console.log('user', allUsers)
+    return {
+        props: {allUsers}
+    }
+}
 
 const Index = () => {
-    const router = useRouter()
     const categoryList = [
         {
             key: '1',
@@ -14,17 +19,13 @@ const Index = () => {
             label: '判断推理'
         },
     ]
-
-    const handleClick = (key) => {
-        router.push(`/exam?category=${key}`)
-    }
-
+    getUsers()
     return <div className={"container max-w-4xl xs:p-4 sm:p-8"}>
         <ul>
             {
                 categoryList.map((item, index) => {
-                    return <li key={index} className="text-center text-lg tracking-wide" onClick={() => handleClick(item.key)}>
-                        <button className={"btn mb-4 w-full"}>{item.label}</button>
+                    return <li key={index} className="text-center text-lg tracking-wide">
+                        <Link href={`/exam?category=${item.key}`}><button className={"btn mb-4 w-full"}>{item.label}</button></Link>
                     </li>
                 })
             }

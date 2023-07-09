@@ -21,8 +21,11 @@ export default function HomeLayout (props) {
 
     return (
         <div>
-            {children}
-            <ul className={"fixed flex bottom-0 left-0 w-full h-20 border-t border-gray-200"}>
+            <div className="layout-content pb-20">
+                {children}
+            </div>
+
+            <ul className={"fixed flex bottom-0 left-0 w-full h-20 border-t border-gray-200 bg-white"}>
                 {options.map(item => {
                     return <li className={"flex-1 flex justify-center items-center text-lg font-bold"} key={item.key} onClick={() => handleClick(item.key)}>{item.label}</li>
                 })}

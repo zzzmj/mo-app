@@ -21,6 +21,11 @@ pnpm dev
 
 每次表结构更改时需要通过下列表明更新它
 ```bash
-npx prisma generate
+npx prisma generate #本地修改
+npx prisma db push #推送到数据库
 ```
 
+数据库可视化
+```bash
+npx prisma studio
+```

@@ -2,10 +2,9 @@
 import {useRouter, useSearchParams} from "next/navigation";
 import {useEffect, useState, useRef, useMemo} from "react";
 import {getQuestionData} from "../../lib/store";
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import Button from "../../components/ui/Button";
 import "swiper/css";
-import classNames from "classnames";
 
 const Exam = () => {
     const searchParams = useSearchParams()
@@ -89,10 +88,9 @@ const Exam = () => {
         swiperRef.current.slideNext()
     }
 
-    console.log('footer', footerState)
     return <div className={"mo-wrap grid grid-cols-1 p-6"} style={{
-        'grid-template-rows':'min-content 1fr min-content',
-        'min-height': '100vh'
+        gridTemplateRows:'min-content 1fr min-content',
+        minHeight: '100vh'
     }}>
         {dataList.length > 0 && <progress className="transition-all progress progress-success w-full h-3" value={`${(activeIndex / dataList.length) * 100}`} max="100"></progress>}
         <Swiper simulateTouch={false} allowTouchMove={false} onSwiper={(swiper) => {

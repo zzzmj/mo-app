@@ -1,6 +1,8 @@
 'use client'
 import {useRouter} from "next/navigation";
+import {SWRConfig} from "swr";
 
+const fetcher = url => fetch(url).then(r => r.json());
 export default function HomeLayout (props) {
     const router = useRouter()
     const { children } = props
@@ -11,7 +13,11 @@ export default function HomeLayout (props) {
         },
         {
             key: '/home/setting',
-            label: '设置'
+            label: '上传'
+        },
+        {
+            key: '/home/my',
+            label: '个人'
         },
     ]
 
@@ -20,8 +26,8 @@ export default function HomeLayout (props) {
     }
 
     return (
-        <div>
-            <div className="layout-content pb-20">
+        <SWRConfig value={{ fetcher }}>
+            <div className="container max-w-4xl xs:p-8 sm:p-12 layout-content pb-20">
                 {children}
             </div>
 
@@ -30,6 +36,6 @@ export default function HomeLayout (props) {
                     return <li className={"flex-1 flex justify-center items-center text-lg font-bold"} key={item.key} onClick={() => handleClick(item.key)}>{item.label}</li>
                 })}
             </ul>
-        </div>
+        </SWRConfig>
     )
 }

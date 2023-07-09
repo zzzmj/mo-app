@@ -1,14 +1,14 @@
 // schema.prisma
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider          = "postgresql"
+  url               = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl         = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
   shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
 }
 
@@ -22,12 +22,34 @@ datasource db {
 // }
 
 model User {
-  id            String       @default(cuid()) @id
-  username      String? @unique
-  phone         String?
-  password      String?
-  name          String?
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  id        String     @id @default(cuid())
+  username  String     @unique
+  password  String
+  createdAt DateTime   @default(now()) @map(name: "created_at")
+  updatedAt DateTime   @updatedAt @map(name: "updated_at")
+  questions Question[] @relation("UserQuestions")
+
   @@map(name: "users")
+}
+
+model Question {
+  id           String   @id @default(cuid())
+  content      String
+  answer       String
+  answerChoice Int
+  options      String[]
+  category     Category @relation(fields: [categoryId], references: [id])
+  categoryId   String
+  user         User     @relation(fields: [userId], references: [id], name: "UserQuestions")
+  userId       String
+
+  @@map(name: "questions")
+}
+
+model Category {
+  id         String     @id @default(cuid())
+  name       String     @unique
+  questions  Question[]
+
+  @@map(name: "categories")
 }

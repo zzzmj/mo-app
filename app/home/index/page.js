@@ -17,7 +17,7 @@ const Index = () => {
             {
                 categoryList && categoryList.map((item, index) => {
                     return <li key={index} className="text-center text-lg tracking-wide">
-                        <Link href={`/exam?category=${item.id}`}>
+                        <Link href={`/home/exam?category=${item.id}`}>
                             <button className={"btn mb-4 w-full"}>{item.name}</button>
                         </Link>
                     </li>

@@ -1,6 +1,7 @@
 'use client'
 import {useRouter} from "next/navigation";
 import {SWRConfig} from "swr";
+import AuthProvider from '@/components/AuthProvider'
 
 const fetcher = url => fetch(url).then(r => r.json());
 export default function HomeLayout (props) {
@@ -26,16 +27,18 @@ export default function HomeLayout (props) {
     }
 
     return (
-        <SWRConfig value={{ fetcher }}>
-            <div className="container max-w-4xl xs:p-8 sm:p-12 layout-content pb-20">
-                {children}
-            </div>
+        <AuthProvider>
+            <SWRConfig value={{ fetcher }}>
+                <div className="container max-w-4xl xs:p-8 sm:p-12 layout-content pb-20">
+                    {children}
+                </div>
 
-            <ul className={"fixed flex bottom-0 left-0 w-full h-20 border-t border-gray-200 bg-white"}>
-                {options.map(item => {
-                    return <li className={"flex-1 flex justify-center items-center text-lg font-bold"} key={item.key} onClick={() => handleClick(item.key)}>{item.label}</li>
-                })}
-            </ul>
-        </SWRConfig>
+                <ul className={"fixed flex bottom-0 left-0 w-full h-20 border-t border-gray-200 bg-white"}>
+                    {options.map(item => {
+                        return <li className={"flex-1 flex justify-center items-center text-lg font-bold"} key={item.key} onClick={() => handleClick(item.key)}>{item.label}</li>
+                    })}
+                </ul>
+            </SWRConfig>
+        </AuthProvider>
     )
 }

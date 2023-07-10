@@ -1,9 +1,9 @@
 'use client'
-import {useRouter, useSearchParams} from "next/navigation";
+import { useSearchParams} from "next/navigation";
 import {useEffect, useState, useRef, useMemo} from "react";
-import {getQuestionData} from "../../lib/store";
+import {getQuestionData} from "../../../lib/store";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import Button from "../../components/ui/Button";
+import Button from "../../../components/ui/Button";
 import "swiper/css";
 
 const Exam = () => {

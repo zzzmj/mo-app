@@ -25,8 +25,8 @@ const My = () => {
     if (session.status === 'unauthenticated') {
         return (
             <div>
-                <h1 class={"text-center text-2xl mb-8"}>个人中心</h1>
-                <div class={"text-center text-lg mb-4"}>您尚未登录，请登录后查看</div>
+                <h1 className={"text-center text-2xl mb-8"}>个人中心</h1>
+                <div className={"text-center text-lg mb-4"}>您尚未登录，请登录后查看</div>
                 <Link href={`/login?redirect_url=${window.location.href}`}><Button type={"success"}>登录</Button></Link>
             </div>
         )
@@ -34,14 +34,14 @@ const My = () => {
 
     return (
         <div>
-            <h1 class={"text-center text-2xl mb-8"}>个人中心</h1>
-            <div class="alert mb-4 justify-start">
+            <h1 className={"text-center text-2xl mb-8"}>个人中心</h1>
+            <div className="alert mb-4 justify-start">
                 <div>用户名称：{userData?.username}</div>
             </div>
-            <div class="alert mb-4 justify-start">
+            <div className="alert mb-4 justify-start">
                 <div>注册时间：{new Date(userData?.createdAt).toLocaleDateString()}</div>
             </div>
-            <div class="alert mb-4 justify-start">
+            <div className="alert mb-4 justify-start">
                 <div>上传题数：0</div>
             </div>
             <Button onClick={handleClickSignOut} style={{ border: 'none' }} type={"error"}>注销登录</Button>

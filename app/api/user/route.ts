@@ -3,20 +3,28 @@ import { NextResponse } from "next/server"
 import User from "@/models/User";
 
 export const GET = async (req: Request) => {
-    const { searchParams } = new URL(req.url)
-    const userId = searchParams.get('userId')
-    if (userId) {
-        const user = await User.findUserById(userId)
-        return NextResponse.json({
-            status: 200,
-            message: 'success',
-            data: user
-        })
-    } else {
+    try {
+        const { searchParams } = new URL(req.url)
+        const userId = searchParams.get('userId')
+        if (userId) {
+            const user = await User.findUserById(userId)
+            return NextResponse.json({
+                status: 200,
+                message: 'success',
+                data: user
+            })
+        } else {
+            return NextResponse.json({
+                status: 500,
+                message: 'fail',
+                data: null
+            })
+        }
+    } catch (error) {
         return NextResponse.json({
             status: 500,
             message: 'fail',
-            data: null
+            data: error
         })
     }
 }

@@ -29,19 +29,31 @@ class User {
   }
 
   static async findUserById(id: string | undefined) : Promise<MoUser | null> {
-    return prisma.user.findFirst({
-      where: { id },
-      select: {
-        username: true,
-        createdAt: true,
-        updatedAt: true
-      }
-    });
+    try {
+      const user = await prisma.user.findFirst({
+        where: { id },
+        select: {
+          username: true,
+          createdAt: true,
+          updatedAt: true
+        }
+      });
+      return user
+    } catch (error) {
+      return null
+    }
+
   }
   static async findUserByUsername(username: string) : Promise<PrismaUser | null> {
-    return prisma.user.findFirst({
-      where: { username },
-    });
+    try {
+      const user = await prisma.user.findFirst({
+        where: { username },
+      })
+      return user
+    } catch (error) {
+      return null
+    }
+
   }
 }
 

@@ -55,7 +55,6 @@ const Setting = () => {
         const result = parseQuestions(textareaValue)
         const userId = session?.data?.user?.id
 
-        console.log('result', result, category, userId)
         setResult(result)
         setQuestionData(result)
     }

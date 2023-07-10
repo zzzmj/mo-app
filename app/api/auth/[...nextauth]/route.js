@@ -11,10 +11,8 @@ const authOptions = {
             async authorize(credentials, req) {
                 const inputUsername = credentials.username
                 const user = await User.findUserByUsername(inputUsername)
-                console.log('auth', user)
                 if (user) {
                     const isCorrect = await bcrypt.compare(credentials.password, user.password)
-                    console.log('isCorrcect', isCorrect)
                     if (isCorrect) {
                         return user
                     } else {
@@ -39,7 +37,6 @@ const authOptions = {
                 session.user.id = token.id
                 session.user.name = token.username
             }
-            console.log('auth session', session)
             return session;
         },
     },

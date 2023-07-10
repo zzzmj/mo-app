@@ -43,7 +43,6 @@ const Exam = () => {
             'c': 2,
             'd': 3,
         }
-        console.log('mapLetterToIndex[choice]', mapLetterToIndex[choice], index)
         if (mapLetterToIndex[choice] === index) {
             setFooterState('success')
         } else {
@@ -52,13 +51,11 @@ const Exam = () => {
     }
 
     const handleSlideChange = (slide) => {
-        console.log('slide', slide)
         setActiveIndex(slide.activeIndex)
         // nextSlide()
     }
 
     const handleCheck = () => {
-        console.log('check')
         if (footerState === 'success' || footerState === 'error' ) {
             nextSlide()
         } else {
@@ -73,7 +70,6 @@ const Exam = () => {
                 'c': 2,
                 'd': 3,
             }
-            console.log('mapLetterToIndex[choice]', mapLetterToIndex[choice], optionIndex)
             if (mapLetterToIndex[choice] === optionIndex) {
                 setFooterState('success')
             } else {

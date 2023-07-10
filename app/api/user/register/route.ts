@@ -1,6 +1,5 @@
 import User from "@/models/User";
 import { NextResponse } from "next/server";
-// @ts-ignore
 import bcrypt from "bcryptjs";
 
 export const POST = async (req: Request) => {

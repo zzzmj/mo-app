@@ -23,7 +23,6 @@ export const GET = async (req: Request) => {
 
 export const POST = async (req: Request) => {
     const res = await req.json()
-    console.log('res', res)
     // req.b
     // 注册用户
     const user = await prisma.user.findFirst({

@@ -40,7 +40,6 @@ const Register = () => {
         } catch (err) {
             setLoading(false)
             setError(err);
-            console.log(err);
         }
     }
 

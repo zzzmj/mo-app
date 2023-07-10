@@ -3,6 +3,7 @@
 import {useRouter, useSearchParams} from "next/navigation";
 import { useState } from "react";
 import {signIn} from "next-auth/react";
+import toast from "react-hot-toast";
 
 
 
@@ -26,16 +27,15 @@ const Login = () => {
             password,
             redirect: false
         }).then(res => {
-            console.log('res', res)
-            const { error } = res
+            const error = res?.error
             if (!error) {
-                window.alert('登录成功！')
+                toast.success("登录成功！")
                 const url = searchParams.get('redirect_url')
                 setTimeout(() => {
                     router.push(url || '/home/index')
                 }, 1000)
             } else {
-                window.alert(error || '登录失败')
+                toast.error(error)
                 if (error === '用户未注册') {
                     router.push('/register')
                 }

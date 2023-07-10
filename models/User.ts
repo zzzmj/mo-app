@@ -7,6 +7,12 @@ interface UserCreateInput {
   password: string;
 }
 
+interface MoUser {
+  username: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 class User {
   static async create(data: UserCreateInput) : Promise<PrismaUser> {
     // 首先检查用户名是否已经被使用
@@ -22,8 +28,8 @@ class User {
     });
   }
 
-  static async findUserById(id: string | undefined) : Promise<PrismaUser | null> {
-    const result = await prisma.user.findFirst({
+  static async findUserById(id: string | undefined) : Promise<MoUser | null> {
+    return prisma.user.findFirst({
       where: { id },
       select: {
         username: true,
@@ -31,8 +37,11 @@ class User {
         updatedAt: true
       }
     });
-
-    return result
+  }
+  static async findUserByUsername(username: string) : Promise<PrismaUser | null> {
+    return prisma.user.findFirst({
+      where: { username },
+    });
   }
 }
 

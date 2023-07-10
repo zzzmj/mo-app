@@ -11,8 +11,6 @@ const My = () => {
     const userId = session.data?.user?.id
     const { isLoading, data } = useSWR(userId ? `/api/user?userId=${userId}` : null)
     const userData = data?.data
-    console.log('session', session)
-    console.log('data', userData, userId)
 
     const handleClickSignOut = () => {
         signOut().then(res => {
@@ -33,17 +31,18 @@ const My = () => {
             </div>
         )
     }
+
     return (
         <div>
             <h1 class={"text-center text-2xl mb-8"}>个人中心</h1>
             <div class="alert mb-4 justify-start">
-                <div>用户名称：{userData.username}</div>
+                <div>用户名称：{userData?.username}</div>
             </div>
             <div class="alert mb-4 justify-start">
-                <div>注册时间：{new Date(userData.createdAt).toLocaleDateString()}</div>
+                <div>注册时间：{new Date(userData?.createdAt).toLocaleDateString()}</div>
             </div>
             <div class="alert mb-4 justify-start">
-                <div>上传题数：xxx</div>
+                <div>上传题数：0</div>
             </div>
             <Button onClick={handleClickSignOut} style={{ border: 'none' }} type={"error"}>注销登录</Button>
         </div>

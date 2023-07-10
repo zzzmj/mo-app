@@ -2,13 +2,11 @@ import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 import User from "@/models/User";
 
-export const GET = async (req, res) => {
+export const GET = async (req: Request) => {
     const { searchParams } = new URL(req.url)
     const userId = searchParams.get('userId')
     if (userId) {
-        // @ts-ignore
         const user = await User.findUserById(userId)
-        console.log('user', user)
         return NextResponse.json({
             status: 200,
             message: 'success',
@@ -21,11 +19,9 @@ export const GET = async (req, res) => {
             data: null
         })
     }
-    // 获取用户数据
-
 }
 
-export const POST = async (req) => {
+export const POST = async (req: Request) => {
     const res = await req.json()
     console.log('res', res)
     // req.b
@@ -39,14 +35,14 @@ export const POST = async (req) => {
     });
 }
 
-
-// 修改用户数据
-export const PUT = (req) => {
-    
-}
-
-
-// 删除用户数据
-export const DELETE = () => {
-
-}
+//
+// // 修改用户数据
+// export const PUT = (req) => {
+//
+// }
+//
+//
+// // 删除用户数据
+// export const DELETE = () => {
+//
+// }

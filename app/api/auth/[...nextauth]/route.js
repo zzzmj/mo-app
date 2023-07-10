@@ -3,20 +3,18 @@ import User from '@/models/User'
 import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-
-export const authOptions = {
+const authOptions = {
     providers: [
         CredentialsProvider({
             id: 'credentials',
             name: 'Credentials',
             async authorize(credentials, req) {
-                console.log('登录呢？？')
                 const inputUsername = credentials.username
-                const user = await User.findUser(inputUsername)
-                console.log('触发登录', inputUsername, user)
+                const user = await User.findUserByUsername(inputUsername)
+                console.log('auth', user)
                 if (user) {
                     const isCorrect = await bcrypt.compare(credentials.password, user.password)
-                    console.log('isCorrect', isCorrect)
+                    console.log('isCorrcect', isCorrect)
                     if (isCorrect) {
                         return user
                     } else {

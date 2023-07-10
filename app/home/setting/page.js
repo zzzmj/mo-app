@@ -3,6 +3,9 @@ import React, {useEffect, useState} from "react";
 import {setQuestionData} from "../../../lib/store";
 import useSWR from "swr";
 import Loading from "@/components/ui/Loading";
+import {useSession} from "next-auth/react";
+import Link from "next/link";
+import Button from "../../../components/ui/Button";
 
 function parseQuestions(input) {
     let parts = input.split('\n').filter(e => e);
@@ -34,6 +37,7 @@ function parseQuestions(input) {
 
 const Setting = () => {
     const { isLoading, data: categoryData } = useSWR('/api/category')
+    const session = useSession()
     const [category, setCategory] = useState('')
     const [textareaValue, setTextareaValue] = useState('')
     const [result, setResult] = useState([])
@@ -49,13 +53,25 @@ const Setting = () => {
 
     const handleParse = () => {
         const result = parseQuestions(textareaValue)
-        console.log('result', result, category)
+        const userId = session?.data?.user?.id
+
+        console.log('result', result, category, userId)
         setResult(result)
         setQuestionData(result)
     }
 
     const handleSelect = (e) => {
         setCategory(e.target.value)
+    }
+
+    if (session.status === 'unauthenticated') {
+        return (
+            <div>
+                <h1 class={"text-center text-2xl mb-8"}>上传习题</h1>
+                <div class={"text-center text-lg mb-4"}>您尚未登录，请登录后上传</div>
+                <Link href={`/login?redirect_url=${window.location.href}`}><Button type={"success"}>登录</Button></Link>
+            </div>
+        )
     }
 
     return <div>

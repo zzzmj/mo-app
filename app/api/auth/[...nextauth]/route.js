@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 const authOptions = {
+    secret: process.env.NEXTAUTH_SECRET,
     providers: [
         CredentialsProvider({
             id: 'credentials',

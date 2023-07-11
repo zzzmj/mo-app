@@ -3,11 +3,14 @@ import Link from "next/link";
 import useSWR from "swr";
 import Loading from "../../../components/ui/Loading";
 import React from "react";
+import { toast } from "react-hot-toast";
 
 const Index = () => {
-    const { isLoading, data: categoryData } = useSWR('/api/category')
+    const { isLoading, data: categoryData, error } = useSWR('/api/category')
     const categoryList = categoryData?.data
-
+    if (error) {
+        toast.error(error)
+    }
     return (
         <ul>
             <h1 class={"text-center text-2xl mb-8"}>题目分类</h1>

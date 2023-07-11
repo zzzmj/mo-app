@@ -1,49 +1,24 @@
 "use client";
 import React, {useEffect, useState} from "react";
-import {setQuestionData} from "../../../lib/store";
+import {setQuestionData} from "@/lib/store";
 import useSWR from "swr";
 import Loading from "@/components/ui/Loading";
 import {useSession} from "next-auth/react";
 import Link from "next/link";
-import Button from "../../../components/ui/Button";
-
-function parseQuestions(input) {
-    let parts = input.split('\n').filter(e => e);
-    let questions = [];
-
-    for (let i = 0; i < parts.length;) {
-        if (!parts[i].startsWith('【例')) {
-            i++;
-            continue;
-        }
-
-        let content = parts[i++].replace(/【例\d+】/g, "").trim();
-        let options = [];
-        while (i < parts.length && !parts[i].startsWith('【解析】')) {
-            options.push(parts[i++].trim());
-        }
-        let answer = parts[i++].replace(/【解析】[A-Za-z]./g, "").trim();
-        let answerChoice = parts[i - 1].match(/【解析】([A-Za-z])/)[1];
-        questions.push({
-            content: content,
-            answer: answer,
-            options: options,
-            answerChoice: answerChoice
-        });
-    }
-
-    return questions;
-}
+import Button from '@/components/ui/Button';
+import request from "@/lib/request";
+import { toast } from "react-hot-toast";
+import { parseQuestions } from '@/lib/utils'
 
 const Setting = () => {
-    const { isLoading, data: categoryData } = useSWR('/api/category')
+    const { isLoading, data: categoryData, error } = useSWR('/api/category')
     const session = useSession()
     const [category, setCategory] = useState('')
     const [textareaValue, setTextareaValue] = useState('')
     const [result, setResult] = useState([])
 
     useEffect(() => {
-        if (categoryData) {
+        if (categoryData && categoryData.data) {
             setCategory(categoryData.data[0].id)
         }
     }, [categoryData])
@@ -54,7 +29,20 @@ const Setting = () => {
     const handleParse = () => {
         const result = parseQuestions(textareaValue)
         const userId = session?.data?.user?.id
+        const data = {
+            userId,
+            questionList: result
+        }
+        if (!result || result.length <= 0) {
+            toast.error('未识别到上传数据')
+            return 
+        }
 
+        request('/api/question', 'POST', data).then(res => {
+            console.log('res', res)
+        }).catch(err => {
+            console.log('err', err)
+        })
         setResult(result)
         setQuestionData(result)
     }
@@ -100,7 +88,7 @@ const Setting = () => {
         <div className={"mt-4"}>
             {
                 result.map((item, index) => {
-                    return <div className={"card shadow-xl mb-4"} key={index}>
+                    return <div className={"alert p-4 mb-4 justify-items-start"} key={index}>
                         <p>【例题】{item.content}</p>
                         <ul>
                             {item.options.map((item, j) => {

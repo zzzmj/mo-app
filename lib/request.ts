@@ -5,7 +5,8 @@ function request(url: URL, method = 'GET', data = null) {
             method,
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            body: ''
         };
 
         if (data) {

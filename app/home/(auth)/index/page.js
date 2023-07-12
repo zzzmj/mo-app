@@ -1,7 +1,7 @@
 'use client'
 import Link from "next/link";
 import useSWR from "swr";
-import Loading from "../../../components/ui/Loading";
+import Loading from "../../../../components/ui/Loading";
 import React from "react";
 import { toast } from "react-hot-toast";
 

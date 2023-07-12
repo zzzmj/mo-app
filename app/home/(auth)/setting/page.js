@@ -31,17 +31,19 @@ const Setting = () => {
         const userId = session?.data?.user?.id
         const data = {
             userId,
-            questionList: result
+            questionList: result || [],
+            categoryId: category,
         }
-        if (!result || result.length <= 0) {
+        if (!data.userId || data.questionList.length <= 0 || !data.categoryId) {
             toast.error('未识别到上传数据')
             return 
         }
 
+        const toastId = toast.loading('上传数据中...')
         request('/api/question', 'POST', data).then(res => {
-            console.log('res', res)
+            toast.success('上传成功', {id: toastId})
         }).catch(err => {
-            console.log('err', err)
+            toast.error('上传失败', {id: toastId})
         })
         setResult(result)
         setQuestionData(result)

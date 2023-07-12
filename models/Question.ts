@@ -2,7 +2,7 @@ import { PrismaClient, Question as PrismaQuestion } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-interface questionObj {
+interface QuestionObj {
     content: string;
     answer: string;
     answerChoice: number;
@@ -36,17 +36,21 @@ class Question {
     return result.length
   }
 
-  static async findUserById(id: string | undefined) : Promise<MoUser | null> {
+  static async findQuestionById(userId: string, categoryId: string) : Promise<QuestionObj[] | null> {
     try {
-      const user = await prisma.user.findFirst({
-        where: { id },
+      const question = await prisma.question.findMany({
+        where: { 
+          userId,
+          categoryId
+        },
         select: {
-          username: true,
-          createdAt: true,
-          updatedAt: true
+          content: true,
+          answer: true,
+          answerChoice: true,
+          options: true,
         }
-      });
-      return user
+      })
+      return question
     } catch (error) {
       return null
     }

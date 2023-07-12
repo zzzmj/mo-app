@@ -2,8 +2,8 @@
 import React from 'react';
 import {signOut, useSession} from "next-auth/react";
 import useSWR from "swr";
-import Button from "../../../components/ui/Button";
-import Loading from "../../../components/ui/Loading";
+import Button from "@/components/ui/Button";
+import Loading from "@/components/ui/Loading";
 import Link from "next/link";
 
 const My = () => {

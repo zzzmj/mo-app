@@ -1,15 +1,23 @@
 'use client'
 import { useSearchParams} from "next/navigation";
 import {useEffect, useState, useRef, useMemo} from "react";
-import {getQuestionData} from "../../../lib/store";
+import {getQuestionData} from "@/lib/store";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import Button from "../../../components/ui/Button";
+import useSWR from "swr";
+import Button from "@/components/ui/Button";
+import Loading from "@/components/ui/Loading";
+import ErrorAlert from "@/components/ui/ErrorAlert";
 import "swiper/css";
+import { useSession } from "next-auth/react";
 
 const Exam = () => {
     const searchParams = useSearchParams()
     const [dataList, setDataList] = useState([])
     const category = searchParams.get('category')
+    const session = useSession()
+    const userId = session.data?.user?.id
+    const { isLoading, data: responseData, error } = useSWR(userId ? `/api/question?userId=${userId}&categoryId=${category}` : null)
+    
     const swiperRef = useRef();
     const [optionIndex, setOptionsIndex] = useState('') // 选中的选项
     const [activeIndex, setActiveIndex] = useState(0) // 当前是第几题
@@ -20,11 +28,10 @@ const Exam = () => {
     }, [dataList, activeIndex])
 
     useEffect(() => {
-        const data = getQuestionData()
-        if (data) {
-            setDataList(data)
+        if (responseData) {
+            setDataList(responseData.data)
         }
-    }, [])
+    }, [responseData])
 
 
     const handleClickOption = (index) => {
@@ -33,17 +40,7 @@ const Exam = () => {
         }
         setOptionsIndex(index)
         const choice = selectQuestion?.answerChoice
-        const mapLetterToIndex = {
-            'A': 0,
-            'B': 1,
-            'C': 2,
-            'D': 3,
-            'a': 0,
-            'b': 1,
-            'c': 2,
-            'd': 3,
-        }
-        if (mapLetterToIndex[choice] === index) {
+        if (choice === index) {
             setFooterState('success')
         } else {
             setFooterState('error')
@@ -56,21 +53,13 @@ const Exam = () => {
     }
 
     const handleCheck = () => {
+        console.log('检查')
         if (footerState === 'success' || footerState === 'error' ) {
             nextSlide()
         } else {
             const choice = selectQuestion?.answerChoice
-            const mapLetterToIndex = {
-                'A': 0,
-                'B': 1,
-                'C': 2,
-                'D': 3,
-                'a': 0,
-                'b': 1,
-                'c': 2,
-                'd': 3,
-            }
-            if (mapLetterToIndex[choice] === optionIndex) {
+            console.log('choice', choice, optionIndex)
+            if (choice === optionIndex) {
                 setFooterState('success')
             } else {
                 setFooterState('error')
@@ -82,6 +71,14 @@ const Exam = () => {
         setOptionsIndex('')
         setFooterState('disable')
         swiperRef.current.slideNext()
+    }
+
+    if (isLoading) {
+        return <Loading text={"加载习题中..."} />
+    }
+
+    if (error) {
+        return <ErrorAlert text={error.message || '出现错误'} />
     }
 
     return <div className={"mo-wrap grid grid-cols-1 p-6"} style={{

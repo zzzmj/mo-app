@@ -9,8 +9,7 @@ import Link from "next/link";
 const My = () => {
     const session = useSession()
     const userId = session.data?.user?.id
-    const { isLoading, data } = useSWR(userId ? `/api/user?userId=${userId}` : null)
-    const userData = data?.data
+    const { isLoading, data: userData } = useSWR(userId ? `/api/user?userId=${userId}` : null)
 
     const handleClickSignOut = () => {
         signOut().then(res => {
@@ -42,7 +41,7 @@ const My = () => {
                 <div>注册时间：{new Date(userData?.createdAt).toLocaleDateString()}</div>
             </div>
             <div className="alert mb-4 justify-start">
-                <div>上传题数：0</div>
+                <div>上传题数：{userData?.count}</div>
             </div>
             <Button onClick={handleClickSignOut} style={{ border: 'none' }} type={"error"}>注销登录</Button>
         </div>

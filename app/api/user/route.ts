@@ -8,10 +8,14 @@ export const GET = async (req: Request) => {
         const userId = searchParams.get('userId')
         if (userId) {
             const user = await User.findUserById(userId)
+            const count = await prisma.question.count()
             return NextResponse.json({
                 status: 200,
                 message: 'success',
-                data: user
+                data: {
+                    ...user,
+                    count
+                }
             })
         } else {
             return NextResponse.json({
@@ -35,9 +39,9 @@ export const POST = async (req: Request) => {
     // 注册用户
     const user = await prisma.user.findFirst({
         where: {
-          OR: [
-            { username: '' },
-          ],
+            OR: [
+                { username: '' },
+            ],
         },
     });
 }

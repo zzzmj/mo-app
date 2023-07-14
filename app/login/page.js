@@ -2,7 +2,7 @@
 
 import {useRouter, useSearchParams} from "next/navigation";
 import { useState } from "react";
-import {signIn} from "next-auth/react";
+import {signIn, useSession} from "next-auth/react";
 import toast from "react-hot-toast";
 
 
@@ -11,6 +11,14 @@ const Login = () => {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const searchParams = useSearchParams()
+    const session = useSession()
+
+    // 已登录的跳首页
+    if (session.status === 'authenticated') {
+        router.push('/home/index')
+        return 
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         const username = e.target[0].value
@@ -50,11 +58,11 @@ const Login = () => {
     return <div className="container max-w-4xl p-8 mt-4">
         {
             loading && <div className="toast toast-center top-1/3">
-            <div className="alert">
-                <span className="loading loading-spinner text-info"></span>
-                <span>登录中...</span>
+                <div className="alert">
+                    <span className="loading loading-spinner text-info"></span>
+                    <span>登录中...</span>
+                </div>
             </div>
-        </div>
         }
         
         <h1 className="text-3xl text-center">登录</h1>

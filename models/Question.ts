@@ -16,45 +16,46 @@ interface MoUser {
 }
 
 class Question {
-  static async create(userId: string, categoryId: string, questionList: PrismaQuestion[]) : Promise<number> {
+    static async create(userId: string, categoryId: string, questionList: PrismaQuestion[]) : Promise<number> {
     // 创建一个新的 Prisma 事务
-    const createQuestions = questionList.map((question: PrismaQuestion) => {
-        return prisma.question.create({
-            data: {
-                content: question.content,
-                answer: question.answer,
-                answerChoice: question.answerChoice,
-                options: question.options,
-                userId,
-                categoryId,
-            }
+        const createQuestions = questionList.map((question: PrismaQuestion) => {
+            return prisma.question.create({
+                data: {
+                    content: question.content,
+                    answer: question.answer,
+                    answerChoice: question.answerChoice,
+                    options: question.options,
+                    userId,
+                    categoryId,
+                }
+            });
         });
-    });
 
-    // 执行事务
-    const result = await prisma.$transaction(createQuestions);
-    return result.length
-  }
-
-  static async findQuestionById(userId: string, categoryId: string) : Promise<QuestionObj[] | null> {
-    try {
-      const question = await prisma.question.findMany({
-        where: { 
-          userId,
-          categoryId
-        },
-        select: {
-          content: true,
-          answer: true,
-          answerChoice: true,
-          options: true,
-        }
-      })
-      return question
-    } catch (error) {
-      return null
+        // 执行事务
+        const result = await prisma.$transaction(createQuestions);
+        return result.length
     }
-  }
+
+    static async findQuestionById(userId: string, categoryId: string) : Promise<QuestionObj[] | null> {
+        try {
+            const question = await prisma.question.findMany({
+                where: { 
+                    userId,
+                    categoryId
+                },
+                select: {
+                    content: true,
+                    answer: true,
+                    answerChoice: true,
+                    options: true,
+                    updatedAt: true
+                }
+            })
+            return question
+        } catch (error) {
+            return null
+        }
+    }
 //   static async findUserByUsername(username: string) : Promise<PrismaUser | null> {
 //     try {
 //       const user = await prisma.user.findFirst({

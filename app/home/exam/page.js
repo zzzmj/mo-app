@@ -29,7 +29,7 @@ const Exam = () => {
 
     useEffect(() => {
         if (responseData) {
-            setDataList(responseData.data)
+            setDataList(responseData)
         }
     }, [responseData])
 
@@ -53,7 +53,6 @@ const Exam = () => {
     }
 
     const handleCheck = () => {
-        console.log('检查')
         if (footerState === 'success' || footerState === 'error' ) {
             nextSlide()
         } else {

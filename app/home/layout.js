@@ -1,7 +1,7 @@
 'use client'
-import {useRouter} from "next/navigation";
-import {SWRConfig} from "swr";
-import AuthProvider from '@/components/AuthProvider'
+import { useRouter } from "next/navigation";
+import { SWRConfig } from "swr";
+
 
 const fetcher = async (url) => {
     const res = await fetch(url);
@@ -10,9 +10,9 @@ const fetcher = async (url) => {
     if (json.status !== 200) {
         throw new Error(json.message);
     }
-    return json;
+    return json.data;
 };
-export default function HomeLayout (props) {
+export default function HomeLayout(props) {
     const router = useRouter()
     const { children } = props
     const options = [
@@ -35,10 +35,8 @@ export default function HomeLayout (props) {
     }
 
     return (
-        <AuthProvider>
-            <SWRConfig value={{ fetcher }}>
-                {children}
-            </SWRConfig>
-        </AuthProvider>
+        <SWRConfig value={{ fetcher }}>
+            {children}
+        </SWRConfig>
     )
 }

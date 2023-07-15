@@ -46,11 +46,11 @@ const Register = () => {
     return <div className="container max-w-4xl p-8 mt-4">
         {
             loading && <div className="toast toast-center top-1/3">
-            <div className="alert">
-                <span className="loading loading-spinner text-info"></span>
-                <span>注册中...</span>
+                <div className="alert">
+                    <span className="loading loading-spinner text-info"></span>
+                    <span>注册中...</span>
+                </div>
             </div>
-        </div>
         }
         
         <h1 className="text-3xl text-center">注册</h1>

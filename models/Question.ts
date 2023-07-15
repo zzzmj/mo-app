@@ -36,7 +36,7 @@ class Question {
         return result.length
     }
 
-    static async findQuestionById(userId: string, categoryId: string) : Promise<QuestionObj[] | null> {
+    static async findQuestionListById(userId: string, categoryId: string) : Promise<QuestionObj[] | null> {
         try {
             const question = await prisma.question.findMany({
                 where: { 
@@ -44,6 +44,7 @@ class Question {
                     categoryId
                 },
                 select: {
+                    id: true,
                     content: true,
                     answer: true,
                     answerChoice: true,
@@ -56,16 +57,79 @@ class Question {
             return null
         }
     }
-//   static async findUserByUsername(username: string) : Promise<PrismaUser | null> {
-//     try {
-//       const user = await prisma.user.findFirst({
-//         where: { username },
-//       })
-//       return user
-//     } catch (error) {
-//       return null
-//     }
-//   }
+
+    static async findQuestionById(questionId: string) : Promise<QuestionObj | null> {
+        try {
+            const question = await prisma.question.findFirst({
+                where: { id: questionId },
+                select: {
+                    id: true,
+                    content: true,
+                    answer: true,
+                    answerChoice: true,
+                    options: true,
+                    updatedAt: true
+                }
+            })
+            return question
+        } catch (error) {
+            return null
+        }
+    }
+
+    // 只返回Content
+    static async getQuestionList(userId: string, categoryId: string) : Promise<any> {
+        try {
+            const question = await prisma.question.findMany({
+                where: { 
+                    userId,
+                    categoryId
+                },
+                select: {
+                    id: true,
+                    content: true,
+                }
+            })
+            return question
+        } catch (error) {
+            return null
+        }
+    }
+
+    static async updateQuestion(id: string, questionData: QuestionObj) {
+        try {
+            const { content, answer, answerChoice, options } = questionData;
+            const question = await prisma.question.update({
+                where: {
+                    id: id,
+                },
+                data: {
+                    content: content,
+                    answer: answer,
+                    answerChoice: answerChoice,
+                    options: {
+                        set: options,
+                    },
+                },
+            })
+            console.log('question', question)
+            return question
+        } catch (error) {
+            return null
+        }
+    }
+
+    static async deleteQuestionByIds(ids: string[]): Promise<number> {
+        const result = await prisma.question.deleteMany({
+            where: {
+                id: {
+                    in: ids,
+                },
+            },
+        });
+        
+        return result.count;
+    }
 }
 
 export default Question

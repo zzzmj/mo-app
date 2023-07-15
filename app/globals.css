@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 .mo-container {
+    color: #1F2937CC;
     min-height: 100vh;
     background-color: #fafafa;
 }

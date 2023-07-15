@@ -1,5 +1,5 @@
 
-function request(url: URL, method = 'GET', data = null) {
+function request(url: string, method = 'GET', data: any = null) {
     return new Promise((resolve, reject) => {
         const options = {
             method,

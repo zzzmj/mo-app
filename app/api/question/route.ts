@@ -11,7 +11,7 @@ export async function GET (req: NextRequest) {
     const userId = url.searchParams.get('userId')
     const categoryId = url.searchParams.get('categoryId')
     if (userId && categoryId) {
-        const questionList = await Question.findQuestionById(userId, categoryId)
+        const questionList = await Question.findQuestionListById(userId, categoryId)
         return NextResponse.json({
             status: 200,
             message: 'success',
@@ -38,5 +38,23 @@ export async function POST (req: Request) {
 
     } catch (err) {
         throw err
+    }
+}
+
+export async function DELETE(req: Request) {
+    const { searchParams } = new URL(req.url)
+    const ids = searchParams.get('ids')?.split(',')
+
+    if (ids) {
+        await Question.deleteQuestionByIds(ids)
+        return NextResponse.json({
+            status: 200,
+            message: 'success',
+        })
+    } else {
+        return NextResponse.json({
+            status: 400,
+            message: '缺少参数',
+        })
     }
 }

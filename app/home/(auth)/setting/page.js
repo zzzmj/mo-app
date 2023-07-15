@@ -56,8 +56,8 @@ const Setting = () => {
     if (session.status === 'unauthenticated') {
         return (
             <div>
-                <h1 class={"text-center text-2xl mb-8"}>上传习题</h1>
-                <div class={"text-center text-lg mb-4"}>您尚未登录，请登录后上传</div>
+                <h1 className={"text-center text-2xl mb-8"}>上传习题</h1>
+                <div className={"text-center text-lg mb-4"}>您尚未登录，请登录后上传</div>
                 <Link href={`/login?redirect_url=${window.location.href}`}><Button type={"success"}>登录</Button></Link>
             </div>
         )
@@ -67,7 +67,7 @@ const Setting = () => {
         {
             isLoading && <Loading text={"加载分类中..."} />
         }
-        <h1 class={"text-center text-2xl mb-8"}>上传习题</h1>
+        <h1 className={"text-center text-2xl mb-8"}>上传习题</h1>
         <div className="mb-6">
             <label className="block mb-1">选择分类：</label>
             <select onChange={handleSelect} value={category} className="select select-bordered w-full">
@@ -81,10 +81,10 @@ const Setting = () => {
         <div className="mb-6">
             <label className="block mb-1">题目内容：</label>
             <textarea value={textareaValue} onChange={handleChange}
-                      className={"textarea textarea-lg bg-slate-100 block w-full"}></textarea>
+                className={"textarea textarea-lg bg-slate-100 block w-full"}></textarea>
         </div>
         <button onClick={handleParse}
-                className='btn w-full border-0 bg-mo-100 border-mo-200 text-mo-300'>识别
+            className='btn w-full border-0 bg-mo-100 border-mo-200 text-mo-300'>识别
         </button>
 
         <div className={"mt-4"}>

@@ -80,9 +80,8 @@ const Exam = () => {
         return <ErrorAlert text={error.message || '出现错误'} />
     }
 
-    return <div className={"mo-wrap grid grid-cols-1 p-6"} style={{
+    return <div className={"mo-wrap grid grid-cols-1 p-6 fixed h-full"} style={{
         gridTemplateRows:'min-content 1fr min-content',
-        minHeight: '100vh'
     }}>
         {dataList.length > 0 && <progress className="transition-all progress progress-success w-full h-3" value={`${(activeIndex / dataList.length) * 100}`} max="100"></progress>}
         <Swiper simulateTouch={false} allowTouchMove={false} onSwiper={(swiper) => {

@@ -159,9 +159,9 @@ const CardDetail = () => {
                     <div
                         id="mo-form-content"
                         contentEditable={true} 
-                        className={"textarea bg-slate-100 block w-full"}>
-                        {questionState.content}
-                    </div>
+                        className={"textarea bg-slate-100 block w-full"}
+                        dangerouslySetInnerHTML={{__html: questionState.content}}
+                    />
                 </div>
                 <div className="item mb-4">
                     <label className="block mb-1">选项：</label>
@@ -173,9 +173,9 @@ const CardDetail = () => {
                                     <div
                                         contentEditable={true} 
                                         style={{ whiteSpace: 'pre-wrap' }}
-                                        className={"w-20 mo-form-item textarea bg-slate-100 flex-1"}>
-                                        {item.value}
-                                    </div>
+                                        className={"w-20 mo-form-item textarea bg-slate-100 flex-1"}
+                                        dangerouslySetInnerHTML={{__html: item.value}}
+                                    />
                                     <div className="w-15 pl-2">
                                         <Button onClick={() => handleDeleteOption(index)} type={"error"} className={"px-2 h-8"}>删除</Button>
                                     </div>
@@ -190,9 +190,9 @@ const CardDetail = () => {
                     <div
                         id="mo-form-answer"
                         contentEditable={true} 
-                        className={"textarea bg-slate-100 block w-full"}>
-                        {questionState.answer}
-                    </div>
+                        className={"textarea bg-slate-100 block w-full"}
+                        dangerouslySetInnerHTML={{__html: questionState.answer}}
+                    />
                 </div>
             </div>
         }

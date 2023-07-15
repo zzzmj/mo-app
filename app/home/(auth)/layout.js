@@ -1,12 +1,18 @@
 'use client'
 import classNames from "classnames";
-import {useRouter} from "next/navigation";
-import { useState } from "react";
+import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function HomeLayout (props) {
+    const pathname = usePathname()
     const [selectKey, setSelectKey] = useState('/home/index')
     const router = useRouter()
     const { children } = props
+
+    console.log('searchParams', pathname)
+    useEffect(() => {
+        setSelectKey(pathname)
+    }, [pathname])
     const options = [
         {
             key: '/home/index',

@@ -10,25 +10,37 @@ import request from "@/lib/request";
 import { toast } from "react-hot-toast";
 import { parseQuestions } from '@/lib/utils'
 
+
+type Question = {
+    content: string,
+    answer: string,
+    answerChoice: number,
+    options: any[],
+}
+
 const Setting = () => {
     const { isLoading, data: categoryData, error } = useSWR('/api/category')
     const session = useSession()
     const [category, setCategory] = useState('')
     const [textareaValue, setTextareaValue] = useState('')
-    const [result, setResult] = useState([])
-
+    const [result, setResult] = useState<Question[]>([])
     useEffect(() => {
-        if (categoryData && categoryData.data) {
-            setCategory(categoryData.data[0].id)
+        if (categoryData && categoryData) {
+            setCategory(categoryData[0].id)
         }
     }, [categoryData])
-    const handleChange = (e) => {
+    const handleChange = (e: any) => {
         setTextareaValue(e.target.value)
     }
 
     const handleParse = () => {
-        const result = parseQuestions(textareaValue)
-        const userId = session?.data?.user?.id
+        const result: any = parseQuestions(textareaValue)
+        setResult(result)
+        setQuestionData(result)
+    }
+
+    const handleUpload = () => {
+        const userId = (session?.data?.user as any)?.id
         const data = {
             userId,
             questionList: result || [],
@@ -38,18 +50,16 @@ const Setting = () => {
             toast.error('未识别到上传数据')
             return 
         }
-
+        
         const toastId = toast.loading('上传数据中...')
         request('/api/question', 'POST', data).then(res => {
             toast.success('上传成功', {id: toastId})
         }).catch(err => {
             toast.error('上传失败', {id: toastId})
         })
-        setResult(result)
-        setQuestionData(result)
     }
 
-    const handleSelect = (e) => {
+    const handleSelect = (e: any) => {
         setCategory(e.target.value)
     }
 
@@ -72,7 +82,7 @@ const Setting = () => {
             <label className="block mb-1">选择分类：</label>
             <select onChange={handleSelect} value={category} className="select select-bordered w-full">
                 {
-                    !isLoading && categoryData?.data?.map((item) => {
+                    !isLoading && categoryData?.map((item: any) => {
                         return <option key={item.id} value={item.id}>{item.name}</option>
                     })
                 }
@@ -83,9 +93,10 @@ const Setting = () => {
             <textarea value={textareaValue} onChange={handleChange}
                 className={"textarea textarea-lg bg-slate-100 block w-full"}></textarea>
         </div>
-        <button onClick={handleParse}
-            className='btn w-full border-0 bg-mo-100 border-mo-200 text-mo-300'>识别
-        </button>
+        <Button onClick={handleParse}>
+            识别
+        </Button>
+        
 
         <div className={"mt-4"}>
             {
@@ -103,6 +114,11 @@ const Setting = () => {
                 })
             }
         </div>
+        {
+            result.length > 0 && <button onClick={handleUpload}
+                className='btn w-full border-0 bg-mo-100 border-mo-200 text-mo-300'>上传
+            </button>
+        }
     </div>
 }
 

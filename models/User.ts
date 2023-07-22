@@ -14,47 +14,47 @@ interface MoUser {
 }
 
 class User {
-  static async create(data: UserCreateInput) : Promise<PrismaUser> {
+    static async create(data: UserCreateInput) : Promise<PrismaUser> {
     // 首先检查用户名是否已经被使用
-    const existingUser = await prisma.user.findFirst({
-        where: { username: data.username },
-    });
+        const existingUser = await prisma.user.findFirst({
+            where: { username: data.username },
+        });
   
-    if (existingUser) {
-        throw new Error('用户名已存在！');
-    }
-    return prisma.user.create({
-      data,
-    });
-  }
-
-  static async findUserById(id: string | undefined) : Promise<MoUser | null> {
-    try {
-      const user = await prisma.user.findFirst({
-        where: { id },
-        select: {
-          username: true,
-          createdAt: true,
-          updatedAt: true
+        if (existingUser) {
+            throw new Error('用户名已存在！');
         }
-      });
-      return user
-    } catch (error) {
-      return null
+        return prisma.user.create({
+            data,
+        });
     }
 
-  }
-  static async findUserByUsername(username: string) : Promise<PrismaUser | null> {
-    try {
-      const user = await prisma.user.findFirst({
-        where: { username },
-      })
-      return user
-    } catch (error) {
-      return null
-    }
+    static async findUserById(id: string | undefined) : Promise<MoUser | null> {
+        try {
+            const user = await prisma.user.findFirst({
+                where: { id },
+                select: {
+                    username: true,
+                    createdAt: true,
+                    updatedAt: true
+                }
+            });
+            return user
+        } catch (error) {
+            return null
+        }
 
-  }
+    }
+    static async findUserByUsername(username: string) : Promise<PrismaUser | null> {
+        try {
+            const user = await prisma.user.findFirst({
+                where: { username },
+            })
+            return user
+        } catch (error) {
+            return null
+        }
+
+    }
 }
 
 export default User

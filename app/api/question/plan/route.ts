@@ -32,22 +32,6 @@ export const GET = async (req: Request) => {
             )
 
             categorys = await Promise.all(countPromises);
-            // const questionList = await prisma.question.findMany({
-            //     where: { 
-            //         userId,
-            //         reviewedAt: {
-            //             lt: new Date()
-            //         }
-            //     },
-            //     select: {
-            //         categoryId: true,
-            //         category: {
-            //             select: {
-            //                 name: true
-            //             }
-            //         },
-            //     }
-            // })
             return NextResponse.json({
                 status: 200,
                 message: "success",

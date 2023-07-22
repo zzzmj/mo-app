@@ -4,11 +4,12 @@ import useSWR from "swr";
 import Loading from "@/components/ui/Loading";
 import React from "react";
 import { toast } from "react-hot-toast";
-import useUserId from "@/lib/hooks/useUserId";
 import ErrorAlert from "@/components/ui/ErrorAlert";
+import { useSession } from "next-auth/react";
 
 const Index = () => {
-    const userId = useUserId()
+    const session = useSession();
+    const userId = (session?.data?.user as any)?.id
     // const { isLoading, data: categoryData, error } = useSWR('/api/category')
     const { isLoading, data: planData, error } = useSWR(userId ? `/api/question/plan?userId=${userId}` : '')
     if (error) {

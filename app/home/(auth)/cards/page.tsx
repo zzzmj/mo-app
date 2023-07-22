@@ -11,10 +11,14 @@ const Cards = () => {
     const session = useSession();
     const userId = (session?.data?.user as any)?.id
 
-    const { isLoading, data: categoryData, error } = useSWR(userId ? `/api/category/tiny?userId=${userId}` : '')
+    // const { isLoading, data: categoryData, error } = useSWR(userId ? `/api/category/tiny?userId=${userId}` : '')
+    const isLoading = false
+    const error = false
+    const categoryData = [{id: '123', name: '测试'}]
+
     if (error) {
         toast.error(error)
-        return <ErrorAlert text={error.message || '出现错误'} />
+        return <ErrorAlert text={(error as any).message || '出现错误'} />
     }
     return (
         <ul>

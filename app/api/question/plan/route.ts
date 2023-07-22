@@ -36,10 +36,10 @@ export const GET = async (req: Request) => {
         }
         
     } catch (err) {
-        console.log('err', err)
         return NextResponse.json({
             status: 500,
             message: "error",
+            test: err
         });
     }
 };

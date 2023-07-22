@@ -2,9 +2,8 @@
 import Link from "next/link";
 import useSWR from "swr";
 import Loading from "@/components/ui/Loading";
-import React, { useEffect } from "react";
+import React from "react";
 import { toast } from "react-hot-toast";
-import { useSession } from "next-auth/react";
 import useUserId from "@/lib/hooks/useUserId";
 import ErrorAlert from "@/components/ui/ErrorAlert";
 

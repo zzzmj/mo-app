@@ -8,7 +8,11 @@ export const GET = async (req: Request) => {
         const userId = searchParams.get('userId')
         if (userId) {
             const user = await User.findUserById(userId)
-            const count = await prisma.question.count()
+            const count = await prisma.question.count({
+                where: {
+                    userId
+                }
+            })
             return NextResponse.json({
                 status: 200,
                 message: 'success',

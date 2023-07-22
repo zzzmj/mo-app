@@ -1,3 +1,4 @@
+'use client'
 import './Spin.scss'
 
 const Spin = () => {

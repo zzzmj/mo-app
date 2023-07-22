@@ -17,6 +17,7 @@ class Category {
                     name: true,
                 }
             })
+            console.log('查询导了category', categorys)
     
             for (let i = 0; i < categorys.length; i++) {
                 const item = categorys[i];
@@ -26,11 +27,13 @@ class Category {
                         categoryId: item.id
                     }
                 });
+                console.log('计算Count', count)
                 item.count = count;
             }
     
             return categorys
         } catch (error) {
+            console.log('这里的err', error)
             throw error
         }
         

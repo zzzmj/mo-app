@@ -6,13 +6,19 @@ import React, { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import useUserId from "@/lib/hooks/useUserId";
+import ErrorAlert from "@/components/ui/ErrorAlert";
 
 const Index = () => {
     const userId = useUserId()
     // const { isLoading, data: categoryData, error } = useSWR('/api/category')
     const { isLoading, data: planData, error } = useSWR(userId ? `/api/question/plan?userId=${userId}` : '')
+    if (error) {
+        toast.error(error)
+        return <ErrorAlert text={error.message || '出现错误'} />
+    }
 
-    const newPlan = planData?.reduce((pre, cur) => {
+    console.log('plan', planData)
+    const newPlan = planData?.reduce((pre: any, cur: any) => {
         if (pre[cur.categoryId]) {
             pre[cur.categoryId].count += 1;
         } else {
@@ -25,9 +31,7 @@ const Index = () => {
         return pre;
     }, {});
 
-    if (error) {
-        toast.error(error)
-    }
+    
     return (
         <ul>
             <h1 className={"text-center text-2xl mb-8"}>Just Do It!</h1>
@@ -61,16 +65,6 @@ const Index = () => {
                     )
                 })
             }
-
-            {/* {
-                categoryData && categoryData.map((item, index) => {
-                    return <li key={index} className="text-center text-lg tracking-wide">
-                        <Link href={`/home/exam?category=${item.id}`}>
-                            <button className={"btn mb-4 w-full"}>{item.name}</button>
-                        </Link>
-                    </li>
-                })
-            } */}
         </ul>
     )
 

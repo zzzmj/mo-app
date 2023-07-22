@@ -4,11 +4,13 @@ import useSWR from "swr";
 import Loading from "@/components/ui/Loading";
 import React from "react";
 import { toast } from "react-hot-toast";
+import ErrorAlert from "@/components/ui/ErrorAlert";
 
 const Cards = () => {
     const { isLoading, data: categoryData, error } = useSWR('/api/category')
     if (error) {
         toast.error(error)
+        return <ErrorAlert text={error.message || '出现错误'} />
     }
     return (
         <ul>

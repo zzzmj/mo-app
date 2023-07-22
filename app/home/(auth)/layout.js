@@ -10,7 +10,6 @@ export default function HomeLayout (props) {
     const router = useRouter()
     const { children } = props
 
-    console.log('searchParams', pathname)
     useEffect(() => {
         setSelectKey(pathname)
     }, [pathname])

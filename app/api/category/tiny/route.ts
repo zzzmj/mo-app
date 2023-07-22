@@ -18,16 +18,27 @@ export const GET = async (req: Request) => {
                     name: true,
                 }
             })
-            const countPromises = categorys.map(item =>
-                prisma.question.count({
+
+            for (let i = 0; i < categorys.length; i++) {
+                const item = categorys[i];
+                const count = await prisma.question.count({
                     where: { 
                         userId,
                         categoryId: item.id
                     }
-                }).then(count => ({...item, count}))
-            )
+                });
+                item.count = count;
+            }
+            // const countPromises = categorys.map(item =>
+            //     prisma.question.count({
+            //         where: { 
+            //             userId,
+            //             categoryId: item.id
+            //         }
+            //     }).then(count => ({...item, count}))
+            // )
 
-            categorys = await Promise.all(countPromises);
+            // categorys = await Promise.all(countPromises);
             return NextResponse.json({
                 status: 200,
                 message: "success",

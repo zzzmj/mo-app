@@ -13,11 +13,11 @@ const Index = () => {
     // const { isLoading, data: categoryData, error } = useSWR('/api/category')
     const { isLoading, data: planData, error } = useSWR(userId ? `/api/question/plan?userId=${userId}` : '')
     if (error) {
-        toast.error(error)
+        toast.error(error.message)
         return <ErrorAlert text={error.message || '出现错误'} />
     }
 
-    console.log('plan', planData)
+    // console.log('plan', planData)
     const newPlan = planData?.reduce((pre: any, cur: any) => {
         if (pre[cur.categoryId]) {
             pre[cur.categoryId].count += 1;

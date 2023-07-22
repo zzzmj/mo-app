@@ -1,13 +1,6 @@
-// const categories = await prisma.category.findMany();
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-interface CategoryWithQuestionCount {
-    id: string;
-    name: string;
-    createdAt: Date;
-    updatedAt: Date;
-    questionCount: number;
-}
+
 
 export const GET = async (req: Request) => {
     try {

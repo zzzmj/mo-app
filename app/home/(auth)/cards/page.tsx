@@ -5,9 +5,13 @@ import Loading from "@/components/ui/Loading";
 import React from "react";
 import { toast } from "react-hot-toast";
 import ErrorAlert from "@/components/ui/ErrorAlert";
+import { useSession } from "next-auth/react";
 
 const Cards = () => {
-    const { isLoading, data: categoryData, error } = useSWR('/api/category')
+    const session = useSession();
+    const userId = (session?.data?.user as any)?.id
+
+    const { isLoading, data: categoryData, error } = useSWR(userId ? `/api/category/tiny?userId=${userId}` : '')
     if (error) {
         toast.error(error)
         return <ErrorAlert text={error.message || '出现错误'} />
@@ -28,7 +32,7 @@ const Cards = () => {
                                 </div>
                                 <div className="flex content justify-start flex-col items-start font-normal">
                                     <div className="mb-2 text-sm">{item.name}</div>
-                                    <div className="text-xs text-gray-500">卡片数{item.questionCount}</div>
+                                    <div className="text-xs text-gray-500">卡片数{item.count}</div>
                                 </div>
                             </button>
                         </Link>

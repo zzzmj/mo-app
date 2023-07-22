@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-interface tinyCategory {
+export interface tinyCategory {
     id: string,
     name: string,
     count?: number
@@ -12,7 +12,6 @@ export const GET = async (req: Request) => {
         const url = new URL(req.url);
         const userId = url.searchParams.get("userId");
         if (userId) {
-
             let categorys: tinyCategory[] = await prisma.category.findMany({
                 select: {
                     id: true,
@@ -23,31 +22,12 @@ export const GET = async (req: Request) => {
                 prisma.question.count({
                     where: { 
                         userId,
-                        categoryId: item.id,
-                        reviewedAt: {
-                            lt: new Date()
-                        }
+                        categoryId: item.id
                     }
                 }).then(count => ({...item, count}))
             )
 
             categorys = await Promise.all(countPromises);
-            // const questionList = await prisma.question.findMany({
-            //     where: { 
-            //         userId,
-            //         reviewedAt: {
-            //             lt: new Date()
-            //         }
-            //     },
-            //     select: {
-            //         categoryId: true,
-            //         category: {
-            //             select: {
-            //                 name: true
-            //             }
-            //         },
-            //     }
-            // })
             return NextResponse.json({
                 status: 200,
                 message: "success",
@@ -56,7 +36,7 @@ export const GET = async (req: Request) => {
         } else {
             return NextResponse.json({
                 status: 400,
-                message: "categoryId和userId没传",
+                message: "userId没传",
             });
         }
         

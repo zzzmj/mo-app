@@ -1,8 +1,9 @@
 'use client'
+
 import Link from "next/link";
 import useSWR from "swr";
 import Loading from "@/components/ui/Loading";
-import React from "react";
+import React, { useMemo } from "react";
 import { toast } from "react-hot-toast";
 import ErrorAlert from "@/components/ui/ErrorAlert";
 import { useSession } from "next-auth/react";
@@ -12,34 +13,46 @@ const Index = () => {
     const userId = (session?.data?.user as any)?.id
     // const { isLoading, data: categoryData, error } = useSWR('/api/category')
     const { isLoading, data: planData, error } = useSWR(userId ? `/api/question/plan?userId=${userId}` : '')
+    const isFinish = useMemo(() => {
+        const count = planData?.reduce((pre: any, cur: any) => {
+            return pre + cur.count
+        }, 0)
+        return count === 0
+    }, [planData])
+
+
     if (error) {
         toast.error(error.message)
         return <ErrorAlert text={error.message || '出现错误'} />
     }
 
+    if (!planData || isLoading) {
+        return <Loading text={"加载复习计划中..."} />
+    }
+    
     // console.log('plan', planData)
-    const newPlan = planData?.reduce((pre: any, cur: any) => {
-        if (pre[cur.categoryId]) {
-            pre[cur.categoryId].count += 1;
-        } else {
-            pre[cur.categoryId] = {
-                count: 1,
-                name: cur.category.name,
-                id: cur.categoryId
-            };
-        }
-        return pre;
-    }, {});
+    // const newPlan = planData?.reduce((pre: any, cur: any) => {
+    //     if (pre[cur.categoryId]) {
+    //         pre[cur.categoryId].count += 1;
+    //     } else {
+    //         pre[cur.categoryId] = {
+    //             count: 1,
+    //             name: cur.category.name,
+    //             id: cur.categoryId
+    //         };
+    //     }
+    //     return pre;
+    // }, {});
 
     
     return (
         <ul>
             <h1 className={"text-center text-2xl mb-8"}>Just Do It!</h1>
-            {
+            {/* {
                 isLoading && <Loading text={"加载复习计划中..."} />
-            }
+            } */}
             {
-                planData && planData.length <= 0 ? <div>
+                isFinish ? <div>
                     <div className="box bg-white p-6 shadow-sm rounded-lg">
                         <h1 className="text-center text-3xl mb-10">太棒啦</h1>
                         <p className="text-center text-2xl mb-10">🍭 今天学习完成啦 🍭</p>
@@ -48,8 +61,7 @@ const Index = () => {
                     <div className="mb-2">今日学习</div>
             }
             {
-                newPlan && Object.keys(newPlan).map((key, index) => {
-                    const item = newPlan[key]
+                !isFinish && planData && planData.map((item: any) => {
                     return (
                         <Link key={item.id} href={`/home/exam?category=${item.id}`}>
                             <button className={"btn mb-4 w-full bg-white justify-start p-4 !h-auto"}>

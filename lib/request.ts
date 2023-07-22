@@ -1,7 +1,14 @@
+interface Options {
+    method: string;
+    headers: {
+      'Content-Type': string;
+    };
+    body?: string;
+}
 
 function request(url: string, method = 'GET', data: any = null) {
     return new Promise((resolve, reject) => {
-        const options = {
+        const options: Options = {
             method,
             headers: {
                 'Content-Type': 'application/json'

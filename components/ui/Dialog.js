@@ -10,7 +10,7 @@ const Dialog = (props) => {
             <p className="py-4">{desc}</p>
             <div className="modal-action">
                 {footer || <>
-                    <button onClick={onConfirm} className="btn btn-error" >确定</button>
+                    <button onClick={onConfirm} className="btn btn-error text-white" >确定</button>
                     <button onClick={onCancel} className="btn" >取消</button>
                 </>}
                 

@@ -27,6 +27,7 @@ export const GET = async (req: Request) => {
             data: categoriesWithQuestionCount,
         });
     } catch (err) {
+        console.log('err', err)
         return NextResponse.json({
             status: 500,
             message: "error",

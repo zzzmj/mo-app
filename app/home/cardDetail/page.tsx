@@ -139,9 +139,6 @@ const CardDetail = () => {
         } finally {
             setSaveLoading(false)
         }
-        
-
-        console.log('更新值', content, answer, options, answerChoice)
     }
 
     return <div className="pt-2 pl-4 pr-4">

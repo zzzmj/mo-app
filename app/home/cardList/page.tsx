@@ -79,14 +79,22 @@ const CardList = () => {
     }
 
     return (
-        <div className="p-4">
-            <h3 className="text-xl text-center mb-4">{categoryName || '卡组'}</h3>
+        <div className="p-6">
+            <button className={"btn mb-4 w-full bg-white justify-start p-4 !h-auto"}>
+                <div className="text-3xl mr-3">
+                    🥳  
+                </div>
+                <div className="flex content justify-start flex-col items-start font-normal">
+                    <div className="mb-2 text-sm">{categoryName || "卡组"}</div>
+                    <div className="text-xs text-gray-500">卡片数{responseData?.length}</div>
+                </div>
+            </button>
             <ul className="list-disc mb-10">
                 {responseData?.map((item: any, index: number) => {
 
                     return <li key={index} className="truncate flex items-center justify-center mb-3 pb-1 border-b">
                         <input checked={(selectIdList[index] as any)?.checked} onClick={() => handleCheckd(item)} type="radio" name={"radio" + index} className="radio radio-xs mr-3" />
-                        <Link className="truncate flex-1 mg-0" href={`/home/cardDetail?questionId=${item.id}`}>{item.content}</Link>
+                        <Link className="truncate flex-1 mg-0 text-sm" href={`/home/cardDetail?questionId=${item.id}`}>{item.content}</Link>
                     </li>
                 })}
             </ul>
@@ -97,7 +105,7 @@ const CardList = () => {
                 <span onClick={handleClick} className={"text-red-500"}>删除</span>
             </div>
 
-            <Dialog id="my-modal" onConfirm={handleDelete} />
+            <Dialog id="my-modal" onConfirm={handleDelete} title="删除" desc="删除后无法恢复，请谨慎操作" />
         </div>
     )
 }

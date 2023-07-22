@@ -1,22 +1,36 @@
-import classNames from "classnames";
+import cn from "@/lib/cn";
+import { cva } from "class-variance-authority";
+
+const buttonVariants = cva(
+    'flex justify-center items-center btn border-gray-300 btn-outline w-full',
+    {
+        variants: {
+            type: {
+                default: 'border-2',
+                primary: 'bg-mo-100 border-mo-200 text-mo-300',
+                success: 'bg-mo-success text-white border-0 border-#[none]',
+                error: 'bg-[#ff4b4b] text-white border-0',
+                success2: 'bg-green-400 !border-0 border-#[none]',
+                error2: 'bg-red-400 !border-0',
+                warning: 'bg-amber-500 text-white !border-0',
+                disable: 'bg-[#e5e5e5] border-0 opacity-1',
+            },
+        },
+        defaultVariants: {
+            type: 'default'
+        }
+    }
+)
 
 // ff4b4b
 const Button = (props) => {
     const { className, type = 'default', onClick, style } = props
-    const cls = classNames({
-        'flex justify-center items-center btn border-gray-300 btn-outline w-full': true,
-        'bg-mo-100 border-mo-200 text-mo-300': type === 'primary',
-        'bg-mo-success text-white border-0 border-#[none]': type === 'success',
-        'bg-[#ff4b4b] text-white border-0': type === 'error',
-        'bg-[#e5e5e5] border-0 opacity-1': type === 'disable',
-        'border-2': type === 'default',
-        [className]: className,
-    })
-    return <button style={style} onClick={onClick} disabled={type === 'disable'} className={cls}>{props.children}</button>
-}
 
-const test = () => {
-    return <div className={"items-center opacity-1"}></div>
+    const cls = cn(buttonVariants({
+        type,
+        className
+    }))
+    return <button style={style} onClick={onClick} disabled={type === 'disable'} className={cls}>{props.children}</button>
 }
 
 export default Button

@@ -1,4 +1,6 @@
+import { SuperMemoGrade, supermemo, SuperMemoItem } from "@/lib/sm2";
 import { PrismaClient, Question as PrismaQuestion } from "@prisma/client";
+import dayjs from "dayjs";
 
 const prisma = new PrismaClient();
 
@@ -8,6 +10,12 @@ interface QuestionObj {
     answerChoice: number;
     options: string[];
 }
+
+// interface Flashcard extends SuperMemoItem {
+//     front: string;
+//     back: string;
+//     reviewAt: string;
+// }
 
 interface MoUser {
   username: string;
@@ -96,6 +104,31 @@ class Question {
         }
     }
 
+    static async getReviewedQuestionList (userId: string, categoryId: string) : Promise<any> {
+        try {
+            const question = await prisma.question.findMany({
+                where: { 
+                    userId,
+                    categoryId,
+                    reviewedAt: {
+                        lt: new Date() // 这行代码表示只查找 reviewedAt 时间早于当前时间的问题
+                    }
+                },
+                select: {
+                    id: true,
+                    content: true,
+                    answer: true,
+                    answerChoice: true,
+                    options: true,
+                    updatedAt: true
+                }
+            })
+            return question
+        } catch (error) {
+            return null
+        }
+    }
+
     static async updateQuestion(id: string, questionData: QuestionObj) {
         try {
             const { content, answer, answerChoice, options } = questionData;
@@ -112,9 +145,33 @@ class Question {
                     },
                 },
             })
-            console.log('question', question)
             return question
         } catch (error) {
+            return null
+        }
+    }
+
+    static async memoQuestion(id: string, grade: SuperMemoGrade) {
+        const question = await prisma.question.findFirst({
+            where: { id }
+        })
+        if (question) {
+            const { interval, repetition, efactor } = supermemo(question, grade)
+
+            const reviewedAt = dayjs(Date.now()).add(interval, 'day').toISOString();
+            await prisma.question.update({
+                where: {
+                    id: id,
+                },
+                data: {
+                    interval,
+                    repetition,
+                    efactor,
+                    reviewedAt
+                },
+            })
+            return true
+        } else {
             return null
         }
     }

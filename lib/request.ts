@@ -6,13 +6,17 @@ function request(url: string, method = 'GET', data: any = null) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: ''
         };
 
         if (data) {
-            options.body = JSON.stringify(data);
+            if (method.toUpperCase() === 'GET') {
+                const params = new URLSearchParams(data).toString();
+                url += '?' + params;
+            } else {
+                options.body = JSON.stringify(data);
+            }
         }
-
+        console.log('url', url)
         fetch(url, options)
             .then(response => {
                 if (!response.ok) {

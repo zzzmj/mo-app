@@ -10,7 +10,7 @@ import request from "@/lib/request";
 import { toast } from "react-hot-toast";
 import { parseQuestions } from "@/lib/utils";
 import cn from "@/lib/cn";
-import SingleUpload from "@/app/home/(auth)/setting/_component/SingleUpload";
+import SingleUpload from "@/components/SingleUpload";
 
 type Question = {
     content: string;

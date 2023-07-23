@@ -4,7 +4,6 @@ import Question from "@/models/Question";
 export async function GET (req: NextRequest) {
     if (!req.url) {
         return  NextResponse.json({ status: 400, message: '无效的url'})
-        
     }
     const url = new URL(req.url)
     const userId = url.searchParams.get('userId')

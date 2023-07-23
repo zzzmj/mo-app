@@ -44,7 +44,6 @@ const Exam = () => {
     const handleClickOption = (index: number) => {
         setOptionsIndex(index)
         const choice = selectQuestion?.answerChoice
-        console.log('chioce', choice, index)
         if (choice === index) {
             setFooterState('success')
         } else {
@@ -53,47 +52,35 @@ const Exam = () => {
     }
 
     const handleSlideChange = (slide: any) => {
-        setActiveIndex(slide.activeIndex + 1)
-        // nextSlide()
+        // console.log('没有被调用吗？')
+        // // setActiveIndex(slide.activeIndex + 1)
+        // // nextSlide()
     }
 
     const handleCheck = async (grade: SuperMemoGrade) => {
-        const toastId = toast.loading('记忆中...')
-        await request(`/api/question/supermemo`, 'get', {
-            userId,
-            questionId: selectQuestion.id,
-            grade
-        }).then(res => {
-            toast.remove(toastId)
-            if (activeIndex >= dataList.length - 1) {
-                router.push('/home/finish')
-            } else {
-                nextSlide()
-            }
-            
-        }).catch(err => {
-            toast.error('记忆失败.')
-            console.log('err', err)
-        })
-        // setTimeout(() => {
-        //     nextSlide()
-        // }, 1000)
-        
-        // grade分数
-        // if (footerState === 'success' || footerState === 'error' ) {
-        //     // nextSlide()
-        // } else {
-        //     const choice = selectQuestion?.answerChoice
-        //     console.log('choice', choice, optionIndex)
-        //     if (choice === optionIndex) {
-        //         setFooterState('success')
+        nextSlide()
+
+        // const toastId = toast.loading('记忆中...')
+        // await request(`/api/question/supermemo`, 'get', {
+        //     userId,
+        //     questionId: selectQuestion.id,
+        //     grade
+        // }).then(res => {
+        //     toast.remove(toastId)
+        //     if (activeIndex >= dataList.length - 1) {
+        //         router.push('/home/finish')
         //     } else {
-        //         setFooterState('error')
+        //         nextSlide()
         //     }
-        // }
+            
+        // }).catch(err => {
+        //     toast.error('记忆失败.')
+        //     console.log('err', err)
+        // })
     }
 
     const nextSlide = () => {
+        setActiveIndex((index) => index+1)
         setOptionsIndex(-1)
         setFooterState('disable');
         (swiperRef as any)?.current.slideNext()
@@ -132,7 +119,10 @@ const Exam = () => {
                                 }
                                 
                                 return <li onClick={() => handleClickOption(j)} className={"flex justify-center items-center"} key={item}>
-                                    <Button type={type} className={"mb-2 h-auto !p-4 justify-start font-normal border-1"}>
+                                    <Button type={type} className={cn({
+                                        "mb-2 h-auto !p-4 justify-start font-normal border-1": true,
+                                        "text-white": j === optionIndex
+                                    })}>
                                         {String.fromCharCode(j+65)}. {item}
                                     </Button>
                                 </li>
@@ -152,18 +142,6 @@ const Exam = () => {
             }
         </Swiper>
         <div className={"footer p-t-2"}>
-            {/* {
-                footerState === 'error' && <div className={"left-0 right-0 bottom-0 bg-[#ffdfe0] p-4"}>
-                    <p className={"text-[#ea2b2b] text-xl font-bold"}>正确答案：</p>
-                    <span className={"text-[#ea2b2b]"}>{selectQuestion?.answer}</span>
-                </div>
-            }
-            {
-                footerState === 'success' && <div className={"left-0 right-0 bottom-0 bg-[#d7ffb8] p-4"}>
-                    <p className={"text-[#58a700] text-2xl font-bold"}>不错哦！</p>
-                    <span className={"text-[#58a700]"}>{selectQuestion?.answer}</span>
-                </div>
-            } */}
             {(footerState === 'success' || footerState === 'error') && 
             <div className="grid review w-full grid-cols-3" style={{
                 // gridTemplateColumns: '1fr 1fr 1fr'

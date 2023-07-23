@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
+// const prisma = new PrismaClient();
 
 interface tinyCategory {
     id: string,
@@ -17,7 +17,6 @@ class Category {
                     name: true,
                 }
             })
-            console.log('查询导了category', categorys)
     
             for (let i = 0; i < categorys.length; i++) {
                 const item = categorys[i];
@@ -27,7 +26,6 @@ class Category {
                         categoryId: item.id
                     }
                 });
-                console.log('计算Count', count)
                 item.count = count;
             }
     

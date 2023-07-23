@@ -1,8 +1,7 @@
 import { SuperMemoGrade, supermemo, SuperMemoItem } from "@/lib/sm2";
-import { Prisma, PrismaClient, Question as PrismaQuestion } from "@prisma/client";
+import { Prisma, Question as PrismaQuestion } from "@prisma/client";
 import dayjs from "dayjs";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
 
 interface QuestionObj {
     content: string;
@@ -121,7 +120,10 @@ class Question {
                     answerChoice: true,
                     options: true,
                     updatedAt: true
-                }
+                },
+                orderBy: {
+                    reviewedAt: 'asc',
+                },
             })
             return question
         } catch (error) {
@@ -140,9 +142,7 @@ class Question {
                     content: content,
                     answer: answer,
                     answerChoice: answerChoice,
-                    options: {
-                        set: options,
-                    },
+                    options: options,
                 },
             })
             return question

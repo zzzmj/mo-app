@@ -9,7 +9,6 @@ import { useSession } from "next-auth/react";
 const Index = () => {
     const session = useSession();
     const userId = (session?.data?.user as any)?.id
-    // const { isLoading, data: categoryData, error } = useSWR('/api/category')
     const { isLoading, data: planData, error } = useSWR(userId ? `/api/question/plan?userId=${userId}` : '')
     const isFinish = useMemo(() => {
         const count = planData?.reduce((pre: any, cur: any) => {
@@ -19,18 +18,6 @@ const Index = () => {
     }, [planData])
 
 
-    // if (error) {
-    //     toast.error(error.message)
-    //     return <ErrorAlert text={error.message || '出现错误'} />
-    // }
-
-    // if (!planData || isLoading) {
-    //     return <Loading text={"加载复习计划中..."} />
-    // }
-    
-
-
-    
     return (
         <ul>
             <h1 className={"text-center text-2xl mb-8"}>Just Do It!</h1>

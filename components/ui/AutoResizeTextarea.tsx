@@ -24,7 +24,6 @@ const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({ value, onChange
         }
         onChange && onChange(event);
     };
-
     return (
         <textarea
             rows={1}

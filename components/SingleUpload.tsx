@@ -34,7 +34,6 @@ interface SingUploadProps {
 
 const SingleUpload = (props: SingUploadProps) => {
     const { defaultValue, onChange, className } = props
-
     const [questionState, setQuestionState] = useState<Question>(defaultValue || {
         content: '',
         answer: '',
@@ -47,20 +46,16 @@ const SingleUpload = (props: SingUploadProps) => {
     }, [questionState])
 
 
-    const handleCheck = (selectIndex: number) => {
-        const updatedOptions = questionState.options.map((item, index) => ({
-            ...item,
-            checked: index === selectIndex,
-        }));
+    const handleCheck = (index: number) => {
         setQuestionState({
             ...questionState,
-            options: updatedOptions,
-        });
+            answerChoice: index
+        })
     }
 
     const handleAddOptions = () => {
         setQuestionState((prevState) => {
-            const updatedOptions = prevState.options.concat({value: '', checked: false})
+            const updatedOptions = prevState.options.concat([''])
             return {
                 ...prevState,
                 options: updatedOptions,
@@ -108,15 +103,8 @@ const SingleUpload = (props: SingUploadProps) => {
                         {
                             questionState?.options?.map((item, index) => {
                                 return <li className="flex  mb-4 items-center" key={index}>
-                                    <input onChange={() => handleCheck(index)} checked={item.checked} type="checkbox" className="checkbox mr-2" />
-
-                                    <AutoResizeTextarea  value={item.value} onChange={(e) => handleChangeOption(index, e.target.value)} />
-                                    {/* <div
-                                        contentEditable={true} 
-                                        style={{ whiteSpace: 'pre-wrap' }}
-                                        className={"w-20 mo-form-item textarea bg-slate-100 flex-1"}
-                                        dangerouslySetInnerHTML={{__html: item.value}}
-                                    /> */}
+                                    <input onChange={() => handleCheck(index)} checked={index === questionState.answerChoice} type="checkbox" className="checkbox mr-2" />
+                                    <AutoResizeTextarea  value={item} onChange={(e) => handleChangeOption(index, e.target.value)} />
                                     <div className="w-20 pl-2">
                                         <Button onClick={() => handleDeleteOption(index)} type={"error"} className={"px-2 h-8"}>删除</Button>
                                     </div>

@@ -11,7 +11,7 @@ export const GET = async (req: Request) => {
     if (!req.url) {
         return  NextResponse.json({ status: 400, message: '无效的url'})
     }
-    
+
     try {
         const url = new URL(req.url);
         const userId = url.searchParams.get("userId");
@@ -23,6 +23,7 @@ export const GET = async (req: Request) => {
                     name: true,
                 }
             })
+            console.log('查询', categorys)
             const countPromises = categorys.map(item =>
                 prisma.question.count({
                     where: { 
@@ -34,7 +35,7 @@ export const GET = async (req: Request) => {
                     }
                 }).then(count => ({...item, count}))
             )
-
+            
             categorys = await Promise.all(countPromises);
             return NextResponse.json({
                 status: 200,

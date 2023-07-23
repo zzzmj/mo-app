@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import request from "@/lib/request";
 import classNames from "classnames";
 import { toast } from "react-hot-toast";
+import SingleUpload from "@/components/SingleUpload";
 
 interface TabProps {
     tabKey: string;
@@ -55,18 +56,7 @@ const CardDetail = () => {
 
     useEffect(() => {
         if (questionData) {
-            const { content, answer, answerChoice, options } = questionData;
-            const updatedOptions = options.map((item: any, index: number) => ({
-                value: item,
-                checked: index === answerChoice,
-            }));
-        
-            setQuestionState({
-                content: content,
-                answer: answer,
-                answerChoice: answerChoice,
-                options: updatedOptions,
-            });
+            setQuestionState(questionData);
         }
     }, [questionData])
 
@@ -82,53 +72,15 @@ const CardDetail = () => {
         return <ErrorAlert text={error.message || '出现错误'} />
     }
 
-    const handleCheck = (selectIndex: number) => {
-        setQuestionState((prevState) => {
-            const updatedOptions = prevState.options.map((item, index) => ({
-                ...item,
-                checked: index === selectIndex,
-            }));
-        
-            return {
-                ...prevState,
-                options: updatedOptions,
-            };
-        });
-    }
-
-    const handleAddOptions = () => {
-        setQuestionState((prevState) => {
-            const updatedOptions = prevState.options.concat({value: '', checked: false})
-            return {
-                ...prevState,
-                options: updatedOptions,
-            };
-        });
-    }
-
-    const handleDeleteOption = (selectIndex: number) => {
-        setQuestionState((prevState) => {
-            const updatedOptions = prevState.options.filter((item, index) => index !== selectIndex)
-            return {
-                ...prevState,
-                options: updatedOptions,
-            };
-        });
+    const handleChange = (data: Question) => {
+        setQuestionState(data);
     }
 
     const handleSave = async () => {
-        const content = document.querySelector('#mo-form-content')?.innerHTML
-        const answer = document.querySelector('#mo-form-answer')?.innerHTML
-        const options = Array.from(document.querySelectorAll('.mo-form-item')).map(item => item.innerHTML)
-        const answerChoice = questionState.options.findIndex(item => item.checked)
-
         setSaveLoading(true)
         const data = {
             id: questionId,
-            content,
-            answer,
-            options,
-            answerChoice,
+            ...questionState
         }
         try {
             await request('/api/question/detail', 'POST', data)
@@ -151,46 +103,7 @@ const CardDetail = () => {
         </div>
         {
             tabKey === 'edit' && <div className="mt-4">
-                <div className="item mb-4">
-                    <label className="block mb-1">内容：</label>
-                    <div
-                        id="mo-form-content"
-                        contentEditable={true} 
-                        className={"textarea bg-slate-100 block w-full"}
-                        dangerouslySetInnerHTML={{__html: questionState.content}}
-                    />
-                </div>
-                <div className="item mb-4">
-                    <label className="block mb-1">选项：</label>
-                    <ul>
-                        {
-                            questionState?.options?.map((item, index) => {
-                                return <li className="flex  mb-4 items-center" key={index}>
-                                    <input onClick={() => handleCheck(index)} checked={item.checked} type="checkbox" className="checkbox mr-2" />
-                                    <div
-                                        contentEditable={true} 
-                                        style={{ whiteSpace: 'pre-wrap' }}
-                                        className={"w-20 mo-form-item textarea bg-slate-100 flex-1"}
-                                        dangerouslySetInnerHTML={{__html: item.value}}
-                                    />
-                                    <div className="w-15 pl-2">
-                                        <Button onClick={() => handleDeleteOption(index)} type={"error"} className={"px-2 h-8"}>删除</Button>
-                                    </div>
-                                </li>
-                            })
-                        }
-                        <button onClick={handleAddOptions} className='btn w-full border-0 bg-mo-100 border-mo-200 text-mo-300'>添加一项</button>
-                    </ul>
-                </div>
-                <div className="item mb-4">
-                    <label className="block mb-1">解析：</label>
-                    <div
-                        id="mo-form-answer"
-                        contentEditable={true} 
-                        className={"textarea bg-slate-100 block w-full"}
-                        dangerouslySetInnerHTML={{__html: questionState.answer}}
-                    />
-                </div>
+                <SingleUpload defaultValue={questionData} onChange={handleChange} />
             </div>
         }
     </div>

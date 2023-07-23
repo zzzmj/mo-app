@@ -8,6 +8,10 @@ interface tinyCategory {
 }
 
 export const GET = async (req: Request) => {
+    if (!req.url) {
+        return  NextResponse.json({ status: 400, message: '无效的url'})
+    }
+    
     try {
         const url = new URL(req.url);
         const userId = url.searchParams.get("userId");

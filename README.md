@@ -33,3 +33,8 @@ npx prisma migrate deploy
 ```bash
 npx prisma studio
 ```
+
+<!-- database: moapp
+username: umpbbanvp29dpq1fdbrc
+host: aws.connect.psdb.cloud
+password: pscale_pw_DbVf2crxaDBV3uGFTybQDTp4dGYbS7APiU6tADrminG -->

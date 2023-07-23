@@ -122,7 +122,7 @@ const Exam = () => {
                     return <SwiperSlide className={"mb-4"} key={index}>
                         <p className={"mb-6"}>{item.content}</p>
                         <ul>
-                            {item.options.map((item, j) => {
+                            {(item as any).options.map((item: string, j: number) => {
                                 let type = ''
                                 if (j === optionIndex && footerState === 'success') {
                                     type = 'success2'

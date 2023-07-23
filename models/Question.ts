@@ -1,5 +1,5 @@
 import { SuperMemoGrade, supermemo, SuperMemoItem } from "@/lib/sm2";
-import { PrismaClient, Question as PrismaQuestion } from "@prisma/client";
+import { Prisma, PrismaClient, Question as PrismaQuestion } from "@prisma/client";
 import dayjs from "dayjs";
 
 const prisma = new PrismaClient();
@@ -8,7 +8,7 @@ interface QuestionObj {
     content: string;
     answer: string;
     answerChoice: number;
-    options: string[];
+    options: string[] | any;
 }
 
 // interface Flashcard extends SuperMemoItem {
@@ -32,7 +32,7 @@ class Question {
                     content: question.content,
                     answer: question.answer,
                     answerChoice: question.answerChoice,
-                    options: question.options,
+                    options: question.options as Prisma.InputJsonValue,
                     userId,
                     categoryId,
                 }

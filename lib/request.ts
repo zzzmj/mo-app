@@ -23,7 +23,6 @@ function request(url: string, method = 'GET', data: any = null) {
                 options.body = JSON.stringify(data);
             }
         }
-        console.log('url', url)
         fetch(url, options)
             .then(response => {
                 if (!response.ok) {

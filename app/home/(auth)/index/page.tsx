@@ -4,8 +4,6 @@ import Link from "next/link";
 import useSWR from "swr";
 import Loading from "@/components/ui/Loading";
 import React, { useMemo } from "react";
-import { toast } from "react-hot-toast";
-import ErrorAlert from "@/components/ui/ErrorAlert";
 import { useSession } from "next-auth/react";
 
 const Index = () => {
@@ -21,36 +19,24 @@ const Index = () => {
     }, [planData])
 
 
-    if (error) {
-        toast.error(error.message)
-        return <ErrorAlert text={error.message || '出现错误'} />
-    }
+    // if (error) {
+    //     toast.error(error.message)
+    //     return <ErrorAlert text={error.message || '出现错误'} />
+    // }
 
-    if (!planData || isLoading) {
-        return <Loading text={"加载复习计划中..."} />
-    }
+    // if (!planData || isLoading) {
+    //     return <Loading text={"加载复习计划中..."} />
+    // }
     
-    // console.log('plan', planData)
-    // const newPlan = planData?.reduce((pre: any, cur: any) => {
-    //     if (pre[cur.categoryId]) {
-    //         pre[cur.categoryId].count += 1;
-    //     } else {
-    //         pre[cur.categoryId] = {
-    //             count: 1,
-    //             name: cur.category.name,
-    //             id: cur.categoryId
-    //         };
-    //     }
-    //     return pre;
-    // }, {});
+
 
     
     return (
         <ul>
             <h1 className={"text-center text-2xl mb-8"}>Just Do It!</h1>
-            {/* {
+            {
                 isLoading && <Loading text={"加载复习计划中..."} />
-            } */}
+            }
             {
                 isFinish ? <div>
                     <div className="box bg-white p-6 shadow-sm rounded-lg">

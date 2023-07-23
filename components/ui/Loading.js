@@ -1,3 +1,5 @@
+'use client'
+
 const Loading = (props) => {
     const { text } = props
     return <div className="toast toast-top toast-center pt-100 z-50">

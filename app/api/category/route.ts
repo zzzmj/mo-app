@@ -1,4 +1,3 @@
-// const categories = await prisma.category.findMany();
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 // interface CategoryWithQuestionCount {

@@ -3,8 +3,6 @@ import Link from "next/link";
 import useSWR from "swr";
 import Loading from "@/components/ui/Loading";
 import React from "react";
-import { toast } from "react-hot-toast";
-import ErrorAlert from "@/components/ui/ErrorAlert";
 import { useSession } from "next-auth/react";
 
 const Cards = () => {
@@ -16,10 +14,10 @@ const Cards = () => {
     // const error = false
     // const categoryData = [{id: '123', name: '测试'}]
 
-    if (error) {
-        toast.error(error)
-        return <ErrorAlert text={(error as any).message || '出现错误'} />
-    }
+    // if (error) {
+    //     toast.error(error)
+    //     return <ErrorAlert text={(error as any).message || '出现错误'} />
+    // }
     return (
         <ul>
             <h1 className={"text-center text-2xl mb-8"}>我的牌组</h1>

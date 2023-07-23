@@ -1,3 +1,5 @@
+'use client'
+
 const ErrorAlert = (props) => {
     const { text } = props
     return (

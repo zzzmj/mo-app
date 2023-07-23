@@ -58,25 +58,23 @@ const Exam = () => {
     }
 
     const handleCheck = async (grade: SuperMemoGrade) => {
-        nextSlide()
-
-        // const toastId = toast.loading('记忆中...')
-        // await request(`/api/question/supermemo`, 'get', {
-        //     userId,
-        //     questionId: selectQuestion.id,
-        //     grade
-        // }).then(res => {
-        //     toast.remove(toastId)
-        //     if (activeIndex >= dataList.length - 1) {
-        //         router.push('/home/finish')
-        //     } else {
-        //         nextSlide()
-        //     }
+        const toastId = toast.loading('记忆中...')
+        await request(`/api/question/supermemo`, 'get', {
+            userId,
+            questionId: selectQuestion.id,
+            grade
+        }).then(res => {
+            toast.remove(toastId)
+            if (activeIndex >= dataList.length - 1) {
+                router.push('/home/finish')
+            } else {
+                nextSlide()
+            }
             
-        // }).catch(err => {
-        //     toast.error('记忆失败.')
-        //     console.log('err', err)
-        // })
+        }).catch(err => {
+            toast.error('记忆失败.')
+            console.log('err', err)
+        })
     }
 
     const nextSlide = () => {

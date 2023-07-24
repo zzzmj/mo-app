@@ -1,7 +1,7 @@
 'use client'
 import { useRouter, useSearchParams} from "next/navigation";
 import {useEffect, useState, useRef, useMemo} from "react";
-import {getQuestionData} from "@/lib/store";
+import { getQuestionData } from "@/lib/store";
 import { SuperMemoGrade } from '@/lib/sm2'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import useSWR from "swr";

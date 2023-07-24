@@ -43,8 +43,8 @@ model User {
 
 model Question {
   id           String   @id @default(cuid())
-  content      String
-  answer       String
+  content      String @db.VarChar(1000)
+  answer       String @db.VarChar(1000)
   answerChoice Int
   options      Json
   category     Category @relation(fields: [categoryId], references: [id])

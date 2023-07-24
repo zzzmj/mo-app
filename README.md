@@ -34,7 +34,9 @@ npx prisma migrate deploy
 npx prisma studio
 ```
 
-<!-- database: moapp
-username: umpbbanvp29dpq1fdbrc
-host: aws.connect.psdb.cloud
-password: pscale_pw_DbVf2crxaDBV3uGFTybQDTp4dGYbS7APiU6tADrminG -->
+## 后续要做的功能
+
+- [] 上传页接入chatGPT，自动解析
+- [] 打卡headmap
+- [] PC端优化，UI优化
+- [] 接入trpc作为前后端

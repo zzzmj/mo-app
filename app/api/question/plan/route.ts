@@ -23,7 +23,6 @@ export const GET = async (req: Request) => {
                     name: true,
                 }
             })
-            console.log('查询', categorys)
             const countPromises = categorys.map(item =>
                 prisma.question.count({
                     where: { 

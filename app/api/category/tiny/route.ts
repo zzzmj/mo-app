@@ -12,7 +12,6 @@ export const GET = async (req: Request) => {
         const userId = url.searchParams.get("userId");
         if (userId) {
             const categories = await Category.getTinyCategory(userId)
-            console.log('查询结果', categories)
             return NextResponse.json({
                 status: 200,
                 message: "success",

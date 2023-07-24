@@ -11,6 +11,7 @@ import { toast } from "react-hot-toast";
 import { parseQuestions } from "@/lib/utils";
 import cn from "@/lib/cn";
 import SingleUpload from "@/components/SingleUpload";
+import fetcher from "@/lib/fetcher";
 
 type Question = {
     content: string;
@@ -20,7 +21,7 @@ type Question = {
 };
 
 const Setting = () => {
-    const { isLoading, data: categoryData, error } = useSWR("/api/category");
+    const { isLoading, data: categoryData, error } = useSWR("/api/category", fetcher);
     const session = useSession();
     const [singleValue, setSingleValue] = useState<Question>()
     const [selectType, setSelectType] = useState("single"); // multiple

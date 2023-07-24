@@ -10,6 +10,7 @@ import request from "@/lib/request";
 import classNames from "classnames";
 import { toast } from "react-hot-toast";
 import SingleUpload from "@/components/SingleUpload";
+import fetcher from "@/lib/fetcher";
 
 interface TabProps {
     tabKey: string;
@@ -43,7 +44,7 @@ const CardDetail = () => {
     const router = useRouter()
     const searchParams = useSearchParams()
     const questionId = searchParams.get('questionId')
-    const { isLoading, data: questionData, error, mutate } = useSWR(`/api/question/detail?questionId=${questionId}`)
+    const { isLoading, data: questionData, error, mutate } = useSWR(`/api/question/detail?questionId=${questionId}`, fetcher)
     const [tabKey, setTabKey] = useState('edit')
     const [saveLoading, setSaveLoading] = useState(false)
 

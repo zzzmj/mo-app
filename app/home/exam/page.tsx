@@ -15,6 +15,7 @@ import { Question } from "@prisma/client";
 import cn from "@/lib/cn";
 import request from "@/lib/request";
 import { toast } from "react-hot-toast";
+import fetcher from "@/lib/fetcher";
 
 type footerStateType = 'disable' | 'success' | 'error' | 'continue'
 
@@ -26,7 +27,7 @@ const Exam = () => {
     const category = searchParams.get('category')
     const session = useSession()
     const userId = (session.data?.user as any)?.id
-    const { isLoading, data: responseData, error } = useSWRImmutable(userId ? `/api/question/supermemoList?userId=${userId}&categoryId=${category}` : null)
+    const { isLoading, data: responseData, error } = useSWRImmutable(userId ? `/api/question/supermemoList?userId=${userId}&categoryId=${category}` : null, fetcher)
     
     const swiperRef = useRef();
     const [optionIndex, setOptionsIndex] = useState(-1) // 选中的选项

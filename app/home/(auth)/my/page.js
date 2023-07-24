@@ -5,11 +5,12 @@ import useSWR from "swr";
 import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
 import Link from "next/link";
+import fetcher from '@/lib/fetcher';
 
 const My = () => {
     const session = useSession()
     const userId = session.data?.user?.id
-    const { isLoading, data: userData } = useSWR(userId ? `/api/user?userId=${userId}` : null)
+    const { isLoading, data: userData } = useSWR(userId ? `/api/user?userId=${userId}` : null, fetcher)
 
     const handleClickSignOut = () => {
         signOut().then(res => {

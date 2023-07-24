@@ -3,15 +3,15 @@ import { useRouter } from "next/navigation";
 import { SWRConfig } from "swr";
 
 
-const fetcher = async (url) => {
-    const res = await fetch(url);
-    const json = await res.json();
-    if (!res.ok) throw new Error(json.message);
-    if (json.status !== 200) {
-        throw new Error(json.message);
-    }
-    return json.data;
-};
+// const fetcher = async (url) => {
+//     const res = await fetch(url);
+//     const json = await res.json();
+//     if (!res.ok) throw new Error(json.message);
+//     if (json.status !== 200) {
+//         throw new Error(json.message);
+//     }
+//     return json.data;
+// };
 export default function HomeLayout(props) {
     const router = useRouter()
     const { children } = props
@@ -35,7 +35,7 @@ export default function HomeLayout(props) {
     }
 
     return (
-        <SWRConfig value={{ fetcher }}>
+        <SWRConfig>
             {children}
         </SWRConfig>
     )

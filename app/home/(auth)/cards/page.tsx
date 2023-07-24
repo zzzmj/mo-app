@@ -4,12 +4,13 @@ import useSWR from "swr";
 import Loading from "@/components/ui/Loading";
 import React from "react";
 import { useSession } from "next-auth/react";
+import fetcher from "@/lib/fetcher";
 
 const Cards = () => {
     const session = useSession();
     const userId = (session?.data?.user as any)?.id
 
-    const { isLoading, data: categoryData, error } = useSWR(userId ? `/api/category/tiny?userId=${userId}` : '')
+    const { isLoading, data: categoryData, error } = useSWR(userId ? `/api/category/tiny?userId=${userId}` : '', fetcher)
     // const isLoading = false
     // const error = false
     // const categoryData = [{id: '123', name: '测试'}]

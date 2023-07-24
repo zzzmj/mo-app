@@ -10,6 +10,7 @@ import "swiper/css";
 import { useSession } from "next-auth/react";
 import request from "@/lib/request";
 import Link from "next/link";
+import fetcher from "@/lib/fetcher";
 
 type SelectItem = {
     id: string;
@@ -21,7 +22,7 @@ const CardList = () => {
     const categoryName = searchParams.get('categoryName')
     const session = useSession()
     const userId = (session.data?.user as any)?.id
-    const { isLoading, data: responseData, error, mutate } = useSWR(userId ? `/api/question?userId=${userId}&categoryId=${category}` : null)
+    const { isLoading, data: responseData, error, mutate } = useSWR(userId ? `/api/question?userId=${userId}&categoryId=${category}` : null, fetcher)
     const [selectIdList, setSelectIdList] = useState<SelectItem[]>([])
     const checkedLength = useMemo(() => {
         return selectIdList.filter(item => item.checked).length

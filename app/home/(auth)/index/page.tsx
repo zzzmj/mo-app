@@ -5,11 +5,12 @@ import useSWR from "swr";
 import Loading from "@/components/ui/Loading";
 import React, { useMemo } from "react";
 import { useSession } from "next-auth/react";
+import fetcher from "@/lib/fetcher";
 
 const Index = () => {
     const session = useSession();
     const userId = (session?.data?.user as any)?.id
-    const { isLoading, data: planData, error } = useSWR(userId ? `/api/question/plan?userId=${userId}` : '')
+    const { isLoading, data: planData, error } = useSWR(userId ? `/api/question/plan?userId=${userId}` : '', fetcher)
     const isFinish = useMemo(() => {
         const count = planData?.reduce((pre: any, cur: any) => {
             return pre + cur.count

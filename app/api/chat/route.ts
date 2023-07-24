@@ -14,8 +14,7 @@ export async function POST(req: Request) {
 
     console.log('prompt', prompt)
     const response = await openai.createChatCompletion({
-        model: 'text-davinci-003',
-        // model: 'gpt-3.5-turbo',
+        model: 'gpt-3.5-turbo',
         stream: true,
         messages: [
             {

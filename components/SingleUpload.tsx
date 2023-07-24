@@ -31,30 +31,21 @@ const SingleUpload = (props: SingUploadProps) => {
         options: [], // {checked}
     })
 
-    const { complete, completion, isLoading } = useCompletion({
-        api: '/api/completion',
-        onResponse: res => {
-            if (res.status === 429) {
-                toast.error('You are being rate limited. Please try again later.')
-            }
-        },
-        onFinish: () => {
-            // do something with the completion result
-            toast.success('Successfully generated completion!')
-        }
+    const { messages, append, setInput, input, handleInputChange, handleSubmit } = useChat({
+        api: '/api/chat'
     })
 
 
-    useEffect(() => {
-        if (completion) {
-            setQuestionState(item => {
-                return {
-                    ...item,
-                    answer: completion
-                }
-            })
-        }
-    }, [completion])
+    // useEffect(() => {
+    //     if (completion) {
+    //         setQuestionState(item => {
+    //             return {
+    //                 ...item,
+    //                 answer: completion
+    //             }
+    //         })
+    //     }
+    // }, [completion])
     
 
     useEffect(() => {
@@ -121,12 +112,25 @@ const SingleUpload = (props: SingUploadProps) => {
         })}。 为什么这道题选${String.fromCharCode(questionState.answerChoice + 65)}而不选其他的？你能详细解释一下原因吗？`
 
         console.log('prompt', prompt)
-        const result = await complete(prompt)
-        console.log('result', result)
+        request('/api/chat', 'POST', {
+            prompt: prompt
+        }).then(res => {
+            console.log('res', res)
+        }).catch(err => {
+            console.log('err', err)
+        })
+        // append({
+        //     content: prompt,
+        //     role: 'user',
+        // }).then(res => {
+        //     console.log('res', res)
+        // }).catch(err => {
+        //     console.log('err', err)
+        // })
     }
 
     return <div className={className}>
-        { isLoading && <Loading text="智能分析中" />}
+        {/* { isLoading && <Loading text="智能分析中" />} */}
         {
             <div className="mt-4">
                 <div className="item mb-4">

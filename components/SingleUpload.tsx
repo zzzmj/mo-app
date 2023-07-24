@@ -32,7 +32,7 @@ const SingleUpload = (props: SingUploadProps) => {
     })
 
     const { complete, completion, isLoading } = useCompletion({
-        api: '/api/chat',
+        api: '/api/completion',
         onResponse: res => {
             if (res.status === 429) {
                 toast.error('You are being rate limited. Please try again later.')
@@ -106,7 +106,7 @@ const SingleUpload = (props: SingUploadProps) => {
         })
     }
 
-    const handleAi = () => {
+    const handleAi = async () => {
         if (!questionState.content) {
             toast('请输入内容')
             return
@@ -121,7 +121,8 @@ const SingleUpload = (props: SingUploadProps) => {
         })}。 为什么这道题选${String.fromCharCode(questionState.answerChoice + 65)}而不选其他的？你能详细解释一下原因吗？`
 
         console.log('prompt', prompt)
-        complete(prompt)
+        const result = await complete(prompt)
+        console.log('result', result)
     }
 
     return <div className={className}>

@@ -31,16 +31,16 @@ const SingleUpload = (props: SingUploadProps) => {
         options: [], // {checked}
     })
 
-    // const { messages, append, setInput, input, handleInputChange, handleSubmit } = useChat({
-    //     api: '/api/chat'
-    // })
+    const { messages, append, setInput, input, handleInputChange, handleSubmit } = useChat({
+        api: '/api/chat'
+    })
 
 
-    // useEffect(() => {
-    //     if (messages) {
-    //         console.log('message', messages)
-    //     }
-    // }, [messages])
+    useEffect(() => {
+        if (messages) {
+            console.log('message', messages)
+        }
+    }, [messages])
     
 
     useEffect(() => {
@@ -111,21 +111,21 @@ const SingleUpload = (props: SingUploadProps) => {
         //     handleSubmit()
         // }, 0)
         console.log('prompt', prompt)
-        request('/api/chat', 'POST', {
-            prompt: prompt
-        }).then(res => {
-            console.log('res', res)
-        }).catch(err => {
-            console.log('err', err)
-        })
-        // append({
-        //     content: prompt,
-        //     role: 'user',
+        // request('/api/chat', 'POST', {
+        //     prompt: prompt
         // }).then(res => {
         //     console.log('res', res)
         // }).catch(err => {
         //     console.log('err', err)
         // })
+        append({
+            content: prompt,
+            role: 'user',
+        }).then(res => {
+            console.log('res', res)
+        }).catch(err => {
+            console.log('err', err)
+        })
     }
 
     return <div className={className}>

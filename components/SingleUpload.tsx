@@ -38,6 +38,14 @@ const SingleUpload = (props: SingUploadProps) => {
 
     useEffect(() => {
         if (messages) {
+            const lastMsg = messages[messages.length - 1]
+            if (lastMsg.role === 'assistant') {
+                setQuestionState((state) => ({
+                    ...state,
+                    answer: lastMsg.content
+                }))
+            }
+            
             console.log('message', messages)
         }
     }, [messages])

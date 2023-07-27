@@ -72,3 +72,10 @@ model Category {
   updatedAt DateTime   @updatedAt @map(name: "updated_at")
   @@map(name: "categories")
 }
+
+// 统计表
+model Stat {
+  id         String     @id @default(cuid())
+  createdAt DateTime   @default(now()) @map(name: "created_at")
+  updatedAt DateTime   @updatedAt @map(name: "updated_at")
+}

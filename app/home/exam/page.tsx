@@ -1,10 +1,8 @@
 'use client'
 import { useRouter, useSearchParams} from "next/navigation";
 import {useEffect, useState, useRef, useMemo} from "react";
-import { getQuestionData } from "@/lib/store";
 import { SuperMemoGrade } from '@/lib/sm2'
 import { Swiper, SwiperSlide } from 'swiper/react';
-import useSWR from "swr";
 import useSWRImmutable from 'swr/immutable'
 import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
@@ -94,7 +92,7 @@ const Exam = () => {
     }
 
     return <div className={"mo-wrap grid grid-cols-1 p-6 fixed h-full overflow-scroll"} style={{
-        gridTemplateRows:'min-content 1fr min-content',
+        gridTemplateRows:'15px 1fr 50px',
     }}>
         {dataList.length > 0 && <progress className="transition-all progress progress-success w-full h-3" value={`${(activeIndex / dataList.length) * 100}`} max="100"></progress>}
         <Swiper 
@@ -102,7 +100,7 @@ const Exam = () => {
             allowTouchMove={false} 
             onSwiper={(swiper) => {
                 (swiperRef as any).current = swiper;}} 
-            onSlideChange={handleSlideChange} className={"mo-wrap carousel mt-4 w-full h-full"}>
+            onSlideChange={handleSlideChange} className={"mo-wrap carousel mt-4 w-full h-full !overflow-y-scroll"}>
             {
                 dataList.map((item, index) => {
                     return <SwiperSlide className={"mb-4"} key={index}>

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+    font-size: 14px;
+}
+
 .mo-container {
     color: #1F2937CC;
     /* position: fixed;

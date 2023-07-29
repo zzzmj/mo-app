@@ -43,20 +43,19 @@ class Question {
         return result.length
     }
 
-    static async findQuestionListById(userId: string, categoryId: string) : Promise<QuestionObj[] | null> {
+    static async findQuestionListById(userId: string, categoryId: string | undefined | null) : Promise<QuestionObj[] | null> {
         try {
+            const where = categoryId ? { userId, categoryId } : { userId }
             const question = await prisma.question.findMany({
-                where: { 
-                    userId,
-                    categoryId
-                },
+                where: where,
                 select: {
                     id: true,
                     content: true,
                     answer: true,
                     answerChoice: true,
                     options: true,
-                    updatedAt: true
+                    updatedAt: true,
+                    createdAt: true,
                 }
             })
             return question

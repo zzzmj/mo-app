@@ -1,0 +1,19 @@
+// ContributionCalendar.module.scss
+.calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 4px;
+}
+
+.calendarCell {
+    height: 14px;
+    width: 14px;
+    background-color: #efefef;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}

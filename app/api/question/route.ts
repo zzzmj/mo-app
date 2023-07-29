@@ -8,7 +8,7 @@ export async function GET (req: NextRequest) {
     const url = new URL(req.url)
     const userId = url.searchParams.get('userId')
     const categoryId = url.searchParams.get('categoryId')
-    if (userId && categoryId) {
+    if (userId) {
         const questionList = await Question.findQuestionListById(userId, categoryId)
         return NextResponse.json({
             status: 200,

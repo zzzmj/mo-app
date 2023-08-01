@@ -104,7 +104,7 @@ const Exam = () => {
             {
                 dataList.map((item, index) => {
                     return <SwiperSlide className={"mb-4"} key={index}>
-                        <p className={"mb-6"}>{item.content}</p>
+                        <p className={"mb-6 leading-normal"}>{item.content}</p>
                         <ul>
                             {(item as any).options.map((item: string, j: number) => {
                                 let type = ''
@@ -116,11 +116,13 @@ const Exam = () => {
                                 }
                                 
                                 return <li onClick={() => handleClickOption(j)} className={"flex justify-center items-center"} key={item}>
+                                    
                                     <Button type={type} className={cn({
-                                        "mb-2 h-auto !p-4 justify-start font-normal border-1": true,
+                                        "flex mb-2 items-start h-auto !p-4 justify-start font-normal border-1 leading-normal text-left": true,
                                         "text-white": j === optionIndex
                                     })}>
-                                        {String.fromCharCode(j+65)}. {item}
+                                        <div className="w-3">{String.fromCharCode(j+65)}.</div>
+                                        <div className="flex-1">{item}</div>
                                     </Button>
                                 </li>
                             })}

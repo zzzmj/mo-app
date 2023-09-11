@@ -56,6 +56,7 @@ class Question {
                     options: true,
                     updatedAt: true,
                     createdAt: true,
+                    category: true
                 }
             })
             return question

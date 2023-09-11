@@ -1,26 +1,22 @@
 'use client'
+import useUserId from "@/hooks/useUserId";
 import fetcher from "@/lib/fetcher"
-import { Question } from "@prisma/client";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import useSWR from "swr";
 
 const HomeCardList = (props: any) => {
     const { categoryId } = props
+    const userId = useUserId()
 
-    const session = useSession();
-    const userId = (session?.data?.user as any)?.id
+    const {  data: responseData } = useSWR(userId ? `/api/question?userId=${userId}&categoryId=${categoryId}` : null, fetcher)
 
-    const { isLoading, data: responseData, error, mutate } = useSWR(userId ? `/api/question?userId=${userId}` : null, fetcher)
-
-    console.log('categoryData')
     return <div>
 
-        {responseData?.map((item: Question) => {
+        {responseData?.map((item: any) => {
             return <div className="bg-white p-4 hover:shadow mb-4 transition-shadow rounded-md" key={item.id}>
                 <div className="text-xs text-gray-400 mb-4">{dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
                 <div className="mb-4">
-                    <span className="text-xs tag p-1 rounded bg-blue-100 text-blue-500">#言语理解</span>
+                    <span className="text-xs tag p-1 rounded bg-blue-100 text-blue-500">#{item.category.name}</span>
                 </div>
                 <div className="text-[#323232]">{item.content}</div>
                 <ul className="text-[#323232]">
